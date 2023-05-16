@@ -1,0 +1,58 @@
+db.getCollection("messages").find({})
+
+db.messages.insertMany([{
+    "chatId" : NumberInt(6),
+    "senderId" : NumberInt(2),
+    "text" : "hihihihihihi 5",
+    "msgTime" : ISODate("2022-05-10T16:00:00.000+0000")
+}
+,
+{
+    "chatId" : NumberInt(6),
+    "senderId" : NumberInt(5),
+    "text" : "hihihihihihi 2",
+    "msgTime" : ISODate("2023-06-10T16:00:00.000+0000")
+}
+,
+{
+    "chatId" : NumberInt(6),
+    "senderId" : NumberInt(5),
+    "text" : "hihihihihihi 2",
+    "msgTime" : ISODate("2024-06-10T16:00:00.000+0000")
+}])
+
+db.getCollection("messages").aggregate([
+    {
+        $project:{
+            chatId:'$chatId',
+            sendId:'$sendId'
+        }
+    }
+]);
+
+db.messages.find({});
+
+db.messages.aggregate([
+{
+    $sort: {"msgTime": -1}
+}
+,
+{
+    $group: {_id: "$chatId", messages: {$push: "$$ROOT"}}
+}
+,
+{
+    $project: {"message": {$first: "$messages"}, _id: 0}
+}
+,
+{
+    $project: {
+        "chatId": "$message.chatId",
+        "senderId": "$message.senderId", 
+        "text" : "$message.text",
+        "msgTime": {$toString: "$message.msgTime"}
+        }
+}
+]);
+
+db.getCollection("messages").find({"chatId" : NumberInt(1)})

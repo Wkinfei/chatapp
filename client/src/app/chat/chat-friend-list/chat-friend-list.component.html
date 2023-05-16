@@ -1,0 +1,48 @@
+<form>
+	<!-- search bar -->
+	<div class="mb-3 row">
+		<label for="profile-search" class="col-xs-3 col-sm-auto col-form-label">Filter:</label>
+		<div class="col-xs-3 col-sm-auto">
+			<input
+				id="profile-search"
+				type="text"
+				class="form-control"
+				name="searchTerm"
+				[(ngModel)]="service.searchTerm"
+			/>
+		</div>
+		<span class="col col-form-label" *ngIf="service.loading$ | async">Loading...</span>
+	</div>
+
+	<!-- table data -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Image</th>
+				<th scope="col">Username</th>
+				<th scope="col">Last Seen</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let profile of profiles$ | async "
+                 (click)="onSelectFriend(profile.userId)">
+				<td>
+					<img [src]="profile.imageUrl"/>
+				</td>
+				<!-- <th scope="row">{{ profile.imageUrl }}</th> -->
+				<td>
+					<ngb-highlight [result]="profile.displayName" [term]="service.searchTerm"></ngb-highlight>
+				</td>
+				<td>{{ profile.msgTime | date: 'short'}}</td>
+                <td><button type="button"
+                    class="btn btn-outline-secondary"
+                    ngbPopover="Click X to remove friend"
+                    triggers="mouseenter:mouseleave"
+                    popoverTitle="Remove friend"
+                     (click)="openDelete(profile)">
+                     X</button></td>
+			</tr>
+		</tbody>
+	</table>
+
+</form>

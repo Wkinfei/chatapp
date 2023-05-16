@@ -1,0 +1,17 @@
+<div *ngFor="let message of messages">
+
+    <!-- <img *ngIf="message?.type === 'image'" [src]="message?.image"/>
+    <span *ngIf="message?.type === 'text'">{{message.senderId}} {{message.text}} {{message.msgTime | date: 'short'}}</span> -->
+    <span>{{message.senderId}} {{message.text}} {{message.msgTime | date: 'short'}}</span>
+
+</div>
+
+<form [formGroup]="chatForm" (ngSubmit)="onSendMessage()">
+    <!-- <div>
+        <textarea placeholder="Message..." formControlName="text"></textarea>
+    </div> -->
+    <input type="text" formControlName="text">
+    <div>
+        <button type="submit" >send</button>
+    </div>
+</form>
