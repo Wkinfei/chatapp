@@ -45,8 +45,7 @@ export class ProfileService {
 			  private rxStompService: RxStompService,
 			  private router:Router) {
 
-    // this.getFriendProfiles(this.id).subscribe(x => {this.profiles = x});
-    this.bossGetFriendProfiles(this.userId);
+    this.getFriendProfiles(this.userId);
 
 	//listen to the changes, identify by type to make changes to this.profiles
 	this.sub$ = this.rxStompService
@@ -56,6 +55,10 @@ export class ProfileService {
 					switch(json['type']) {
 						case "delete":
 							this.onDeleteFriend(json)
+							break;
+						case "add":
+							this.onAddProfile(json)
+							// console.log(json)
 							break;
 						default:
 							console.log(json)
@@ -112,16 +115,12 @@ export class ProfileService {
 
 		return of({ profiles, total });
 	}
-
-	// getFriendProfiles(id : number){
-	// 	return this.httpClient.get<FriendProfiles[]>(`${this.URI}/profiles/${this.id}`)
-	// }
 	
 	private httpGetFriendProfiles(id : number){
-		return this.httpClient.get<FriendProfiles[]>(`${this.URI}/profiles/${this.userId}`)
+		return this.httpClient.get<FriendProfiles[]>(`${this.URI}/profiles/${id}`)
 	}
 
-	public bossGetFriendProfiles(id: number){
+	public getFriendProfiles(id: number){
 		this.httpGetFriendProfiles(id)
 				.subscribe(x => {
 					this.profiles = x;
@@ -133,13 +132,18 @@ export class ProfileService {
 		return this.httpClient.get<Relationship[]>(`${this.URI}/profiles/relationship`)
 	}
 
-	addProfile(profile: FriendProfiles) {
-        this.profiles.push(profile);
+	addProfile(id:number, payload: {email: string}) {
+        this.httpClient.post(`${this.URI}/profiles/${id}/addfriend`,payload).subscribe();
     }
+
+	onAddProfile(json:any){
+		this.profiles.push(json['profile']);
+		this.refreshProfiles();
+	}
 
     removeProfile(friendId: number) {
 		 const relationship: Relationship = {userId1: friendId, userId2: this.userId}
-		 this.httpClient.delete("/api/profiles", {body: relationship}).subscribe();
+		 this.httpClient.delete(`${this.URI}/profiles`, {body: relationship}).subscribe();
     }
 
 	onDeleteFriend(json:any){
@@ -148,7 +152,7 @@ export class ProfileService {
 						if (idx >= 0) {
 						    this.profiles.splice(idx, 1);
 						}
-						this._search$.next();
+						this.refreshProfiles();
 						this.router.navigate(["/chat"])
 	}
 

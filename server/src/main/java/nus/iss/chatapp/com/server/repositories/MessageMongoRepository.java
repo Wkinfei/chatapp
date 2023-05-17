@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -130,4 +131,25 @@ public class MessageMongoRepository {
 
         // System.out.println("deleteMessage>>>"+ result.toString());
     }
+
+    // public MessageDetail getLatestMessageDetailByChatId(Integer chatId){
+    //     /*
+    //       db.getCollection("messages")
+    //       .find({"chatId":3},{"_id":0})
+    //       .sort({"msgTime":-1})
+    //       .limit(1);
+    //      */
+
+    //      Criteria criteria = Criteria.where("chatId").is(chatId);
+    //      Query query = Query.query(criteria)
+    //                     .with(
+    //                         Sort.by(Sort.Direction.DESC,"msgTime")
+    //                     ).limit(1);
+    //                     query.fields()
+    //                     .exclude("_id");
+    //         Document doc = mongoTemplate.findOne(query, Document.class);
+
+    //         return Utils.toMessageDetail(doc);
+    // }
+   
 }

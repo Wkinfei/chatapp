@@ -42,7 +42,9 @@ export class ChatFriendListComponent {
       // modalRef.result
       //     .then(resolve => console.log("resolve --> ", resolve))
       //     .catch(reject => console.log("reject --> " , reject));
+    }
 
-     
+    onAddFriend(){
+      this.router.navigate(["/chat/add-friend"])
     }
 }

@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MessageDetail, UpdatedMessage } from '../models/message';
+import { GifDetails, MessageDetail, UpdatedMessage } from '../models/message';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,6 @@ export class ChatService {
 
   constructor(private httpClient: HttpClient) { }
 
-  // sendMessage(payload: {text : string, chatID:number, senderID:number, msgTime:Date}){
-  //   return this.httpClient.post(`${this.URI}/chat`, payload);
-  // }
-
   sendMessage(payload: MessageDetail){
     return this.httpClient.post(`${this.URI}/chat`, payload);
   }
@@ -23,4 +19,16 @@ export class ChatService {
   getAllMessages(chatId:number){
     return this.httpClient.get<MessageDetail[]>(`${this.URI}/chat/${chatId}`)
   }
+
+  //getGIFs
+  getGif(q: string,limit: number){
+    let params = new HttpParams()
+                .append("q",q)
+                .append("limit",limit)
+                
+    return this.httpClient.get<{gifs: GifDetails[]}>(`${this.URI}/chat/gif`, {params: params})
+  }
+
+  
+
 }

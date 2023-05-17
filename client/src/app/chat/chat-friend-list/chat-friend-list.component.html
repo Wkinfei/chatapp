@@ -1,3 +1,4 @@
+<button type="button" (click)="onAddFriend()">Add Friend</button>
 <form>
 	<!-- search bar -->
 	<div class="mb-3 row">
@@ -16,13 +17,13 @@
 
 	<!-- table data -->
 	<table class="table table-striped">
-		<thead>
+		<!-- <thead>
 			<tr>
 				<th scope="col">Image</th>
 				<th scope="col">Username</th>
 				<th scope="col">Last Seen</th>
 			</tr>
-		</thead>
+		</thead> -->
 		<tbody>
 			<tr *ngFor="let profile of profiles$ | async "
                  (click)="onSelectFriend(profile.userId)">
@@ -32,6 +33,10 @@
 				<!-- <th scope="row">{{ profile.imageUrl }}</th> -->
 				<td>
 					<ngb-highlight [result]="profile.displayName" [term]="service.searchTerm"></ngb-highlight>
+				</td>
+				<td>
+					<!-- ngIf statement for text / image -->
+					{{profile.text}}
 				</td>
 				<td>{{ profile.msgTime | date: 'short'}}</td>
                 <td><button type="button"

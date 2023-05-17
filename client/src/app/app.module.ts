@@ -14,6 +14,8 @@ import { NgbPaginationModule, NgbAlertModule, NgbModule } from '@ng-bootstrap/ng
 import { DecimalPipe } from '@angular/common';
 import { DeleteComponent } from './chat/chat-friend-list/modals/delete/delete.component';
 import { ChatBannerComponent } from './chat/chat-banner/chat-banner.component';
+import { AddFriendComponent } from './chat/add-friend/add-friend.component';
+import { GifComponent } from './chat/chat-detail/modals/gif/gif.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { ChatBannerComponent } from './chat/chat-banner/chat-banner.component';
     ChatFriendListComponent,
     ChatDetailComponent,
     DeleteComponent,
-    ChatBannerComponent
+    ChatBannerComponent,
+    AddFriendComponent,
+    GifComponent
   ],
   imports: [
     BrowserModule,

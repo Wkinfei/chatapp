@@ -3,6 +3,7 @@ export interface MessageDetail {
     chatId: number,
     senderId: number,
     msgTime: Date,
+    msgType: string;
     // type?: string;
     // image?: string;
   }
@@ -15,3 +16,10 @@ export interface MessageDetail {
     type:String,
     messageDetail:MessageDetail
   }
+
+  export interface GifDetails{
+    // id: string;
+    // content_description: string;
+    tinyGifUrl: string;
+    nanoGifUrl: string;
+}

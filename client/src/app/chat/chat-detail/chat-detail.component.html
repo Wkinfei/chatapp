@@ -7,11 +7,29 @@
 </div>
 
 <form [formGroup]="chatForm" (ngSubmit)="onSendMessage()">
-    <!-- <div>
-        <textarea placeholder="Message..." formControlName="text"></textarea>
-    </div> -->
-    <input type="text" formControlName="text">
+    <!-- <input type="text" formControlName="text"> -->
+    <input [ngModel]="myProperty$ | async" 
+    (ngModelChange)="myProperty$.next($event)" 
+    formControlName="text"> 
+    <h1>{{ myProperty$ | async }}</h1>
     <div>
         <button type="submit" >send</button>
     </div>
 </form>
+
+<!-- <form #chatForm="ngForm" (ngSubmit)="onSendMessage()">
+  
+    <input [ngModel]="myProperty$ | async" 
+    (ngModelChange)="myProperty$.next($event)"> 
+    <h1>{{ myProperty$ | async }}</h1>
+    <div>
+        <button type="submit" >send</button>
+    </div>
+</form> -->
+
+
+<div style="display: flex; flex-wrap: wrap;">
+    <div *ngFor="let gif of gifs; let idx=index">
+        <img [src]="gif.tinyGifUrl" >
+    </div>
+</div>

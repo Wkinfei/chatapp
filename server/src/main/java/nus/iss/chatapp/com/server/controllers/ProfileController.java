@@ -4,21 +4,28 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import nus.iss.chatapp.com.server.models.FriendProfile;
 import nus.iss.chatapp.com.server.models.ProfileDetail;
 import nus.iss.chatapp.com.server.models.Relationship;
+import nus.iss.chatapp.com.server.repositories.ProfileRepository;
 import nus.iss.chatapp.com.server.services.ProfileService;
 import nus.iss.chatapp.com.server.services.SocketProfileService;
+import nus.iss.chatapp.com.server.utils.Utils;
 
 @RestController
 @RequestMapping("/api/profiles")
@@ -28,6 +35,9 @@ public class ProfileController {
 
     @Autowired
     SocketProfileService socketProfileService;
+
+    @Autowired
+    ProfileRepository profileRepo;
     
   @GetMapping(path="/{id}")
   public List<FriendProfile> getFriendProfiles(@PathVariable Integer id){
@@ -58,4 +68,39 @@ public class ProfileController {
             .status(HttpStatus.NO_CONTENT)
             .build();
    }
+
+   @PostMapping("/{id}/addfriend")
+    public ResponseEntity<String> addFriend(@RequestBody String json,@PathVariable Integer id){
+      
+      JsonObject j = Utils.toJson(json);
+      String email = j.getString("email");
+    
+      Integer counts = profileService.addRelationship(id, email);
+
+        if(counts == 0){
+          return ResponseEntity
+                  .status(HttpStatus.BAD_REQUEST)
+                  .contentType(MediaType.APPLICATION_JSON)
+                    .body(Json.createObjectBuilder()
+                             .add("message","Email doesn't exist...")
+                             .build().toString());
+        }
+          //socket
+          ProfileDetail profile = profileService.getProfileDetail(email);
+          socketProfileService.updateAdd(id, profile.getuserId());
+          return ResponseEntity
+                  .status(HttpStatus.ACCEPTED)
+                  .build();
+        
+        }
+
+      //  @PostMapping("/test")
+      //  public void test(@RequestParam Integer id1, @RequestParam Integer id2){
+      //   socketProfileService.updateAdd(id1, id2);
+      //  }
+
+  // @GetMapping("/test")
+  // public void test(@RequestParam Integer id1, @RequestParam Integer id2){
+  //   profileRepo.checkRelationshipExist(id1, id2);
+  // }
 }

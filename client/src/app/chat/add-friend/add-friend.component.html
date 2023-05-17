@@ -1,0 +1,15 @@
+<form [formGroup]="addFriendForm" (ngSubmit)="processForm()">
+    <h2>Enter Your Friend Email</h2>
+    <table>
+        <tr>
+            <td>Email:</td>
+            <td><input type="text" formControlName="email"></td>
+        </tr>
+    </table>
+    <div>
+        <button type="button" (click)="cancel()">Cancel</button>
+        <button type="submit">Add</button>
+    </div>
+</form>
+
+

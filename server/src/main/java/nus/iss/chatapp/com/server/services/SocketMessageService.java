@@ -26,7 +26,7 @@ public class SocketMessageService {
         // socketService.sendMessage(msg.getSenderId(), updateMessage);
         // System.out.println(">>" + msg);
         template.convertAndSend("/notifications/messages/%d".formatted(msg.getSenderId()), msg);
-        // messageMongoRepository.insertMessage(msg);
+    
         // System.out.println("sent");
         return;
     }

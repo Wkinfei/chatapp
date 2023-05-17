@@ -110,4 +110,28 @@ public class ProfileService {
             throw new DeleteUserDataException(e.getMessage());
         }
     }
+
+    public ProfileDetail getProfileDetail(String email){
+        return profileRepo.getUserProfileByEmail(email);
+    }
+
+    public Integer addRelationship(Integer id1, String email){
+        ProfileDetail user = profileRepo.getUserProfileByEmail(email);
+        Integer userId1 = Math.min(id1,user.getuserId());
+        Integer userId2 = Math.max(id1,user.getuserId());
+
+        //if validate = 1 {insert sql}
+        if(profileRepo.checkRelationshipExist(userId1, userId2) == false){
+            return profileRepo.addRelationship(userId1, userId2);
+        }else{
+            return 0;
+        }
+    }
+
+    public FriendProfile getFriendProfile(Integer id1, Integer id2){
+
+        //get chat id to get msg
+        //id to get user profile
+        return null;
+    }
 }
