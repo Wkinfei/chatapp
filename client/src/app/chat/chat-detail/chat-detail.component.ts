@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup} from '@angular/forms';
+import { FormGroup} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject, Subscription, debounceTime, distinctUntilChanged, filter, firstValueFrom, map } from 'rxjs';
-import { GifDetails, MessageDetail, UpdatedMessage } from 'src/app/models/message';
+import { BehaviorSubject, Subscription, debounceTime, distinctUntilChanged, filter, firstValueFrom, map, tap } from 'rxjs';
+import { GifDetails, MessageDetail} from 'src/app/models/message';
 import { Relationship } from 'src/app/models/profiles';
 import { RxStompService } from 'src/app/rx-stomp/rx-stomp.service';
 import { ChatService } from 'src/app/services/chat.service';
@@ -22,37 +22,26 @@ export class ChatDetailComponent implements OnInit{
 
   messages: MessageDetail[] = [];
   relationships: Relationship[]=[]
-  // {"text":"haha","chatId":3,"senderId":1,"msgTime":new Date("2023-05-13T10:22:22.755Z"), "type":"text"}, 
-  //                         {"text": "this is gif", "image": "https://media.tenor.com/SitX046aHEoAAAAd/lunch-lunch-time.gif", "chatId":3,"senderId":1,"msgTime":new Date("2023-05-13T10:22:22.755Z"), "type":"image"}, 
-
+  
   userId: number = 1;
   friendId!: number;
   chatId!:number;
   message: string = "";
-
-  // msg = {
-  //   text: "",
-  //   chatId: this.chatId, 
-  //   senderId: this.userId,
-  //   msgTime: new Date()
-  // }
-
+  myProperty: string = "";
   myProperty$ = new BehaviorSubject('');
-
   gifs: GifDetails[] =  [];
 
+  //Get friend profile imageUrl & displayName
+
   constructor(private rxStompService: RxStompService, 
-    private fb: FormBuilder,
     private chatSvc: ChatService,
     private activatedRoute: ActivatedRoute,
     private profileSvc: ProfileService,
-    private modalService: NgbModal ){
-
-  }
+    private modalService: NgbModal ){}
   
   ngOnInit(): void {
 
-    this.chatForm = this.createForm();
+    this.searchGif();
 
     this.params$ = this.activatedRoute.params.subscribe(
       async (params)=> {
@@ -62,52 +51,56 @@ export class ChatDetailComponent implements OnInit{
         this.chatId = await this.getChatId(this.userId, this.friendId);
         this.messages = await this.getMsg(this.chatId);
 
-        this.resetForm();
-
-        //?
         if(this.sub$) this.sub$.unsubscribe();
 
         this.sub$ = this.rxStompService
             .watch(`/notifications/messages/${this.userId}`)
-            .subscribe((data) => {this.messages.push(JSON.parse(data.body) as MessageDetail);
-                                });
+            .pipe(
+              map((data) => JSON.parse(data.body) as MessageDetail),
+              filter(data => data.chatId == this.chatId),
+              tap(data => this.messages.push(data))
+              )
+            .subscribe();
+      })
+  }//oninit
 
-        this.searchGif();
-      }
-    );
+  resetForm() {
+    this.myProperty = ""
   }
 
-  createForm(): FormGroup {
-    let grp = this.fb.group({
-      text: this.fb.control<string>(""),
-      chatId: this.fb.control<number>(0), 
-      senderId: this.fb.control<number>(0),
-      //TODO: edit Date() to UTC
-      msgTime: this.fb.control<Date>(new Date()) 
-    });
-    console.log("form group");
-    return grp;
-  }
-
- 
-
-  resetForm(): void{
-    this.chatForm.setValue({
-      text: "", 
-      chatId: this.chatId, 
-      senderId: this.userId, 
-      //TODO: edit Date() to UTC
-      msgTime: new Date()})
+  ngModelChange($event: string) {
+    this.myProperty=$event;
+    this.myProperty$.next(this.myProperty);
   }
 
   onSendMessage() {
-    //assign a type for text
-    //if text start with "@gif --> msgType=image"
-    const message = this.chatForm.value as MessageDetail;
-    message.msgTime = new Date();
-    console.log(message);
+    const body = {
+      text: this.myProperty,
+      chatId: this.chatId,
+      senderId: this.userId,
+      msgType: "text",
+      msgTime: new Date()
+       }
 
-    this.chatSvc.sendMessage(message)
+       this.chatSvc.sendMessage(body)
+        .subscribe(() => {
+          this.resetForm(); 
+          // this.profileSvc.getFriendProfiles(this.userId);
+        });
+ 
+    // alert(JSON.stringify(body));
+  }
+
+  sendGif(gifUrl: string) {
+    const body = {
+      text: gifUrl,
+      chatId: this.chatId,
+      senderId: this.userId,
+      msgType: "image",
+      msgTime: new Date()
+       }
+      
+       this.chatSvc.sendMessage(body)
         .subscribe(() => {
           this.resetForm(); 
           this.profileSvc.getFriendProfiles(this.userId);
@@ -134,14 +127,15 @@ export class ChatDetailComponent implements OnInit{
     this.chatSvc.getAllMessages(chatId).subscribe(x => {
       this.messages = x;
     });
-    let filterMsgByChatId = this.messages.filter(msg => (msg.chatId == chatId));
-     return filterMsgByChatId;
+    // let filterMsgByChatId = this.messages.filter(msg => (msg.chatId == chatId));
+    //  return filterMsgByChatId;
+    return this.messages;
   }
 
   searchGif(){
     this.myProperty$.asObservable()
     .pipe(
-      debounceTime(500),
+      debounceTime(1000),
       distinctUntilChanged(),
       filter((message) => message.length > 5),
       filter((message) => message.substring(0, 5).toLocaleLowerCase() === "@gif "),
@@ -150,10 +144,16 @@ export class ChatDetailComponent implements OnInit{
     )
     .subscribe(message => {
       console.log(message)
-      this.chatSvc.getGif(message, 10).subscribe( x => this.gifs = x.gifs);
-      //add modals
-      const modalRef = this.modalService.open(GifComponent);
-      //pass the list of gifs
+      this.chatSvc.getGif(message, 50).subscribe( x => {
+        this.gifs = x.gifs;
+        const modalRef = this.modalService.open(GifComponent);
+        modalRef.componentInstance.gifs = this.gifs;
+        modalRef.result
+                  // //modelRef.result to fetch the selected gif and send
+                  .then((gif: GifDetails) => this.sendGif(gif.tinyGifUrl))
+                  .catch(err => console.log(err));
+      });
+
     });
   }
 }

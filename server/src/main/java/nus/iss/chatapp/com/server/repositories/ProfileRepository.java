@@ -1,19 +1,15 @@
 package nus.iss.chatapp.com.server.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.AccumulatorOperators.Min;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
-import ch.qos.logback.classic.pattern.Util;
 import nus.iss.chatapp.com.server.models.ProfileDetail;
 import nus.iss.chatapp.com.server.models.Relationship;
 
 import static nus.iss.chatapp.com.server.utils.Quries.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -36,11 +32,6 @@ public class ProfileRepository {
     //                         new BeanPropertyRowMapper<>(ProfileDetail.class), 
     //                         id1, id1);
 
-    // }
-
-    // public List<Integer> findChatIdsById(Integer id){
-    //     return template.queryForList(SQL_RELATIONSHIP_FIND_CHAT_IDS, Integer.class, id, id);
-    // //    return template.query(SQL_PROFILE_SELECT_BY_ID, new BeanPropertyRowMapper<>(Integer.class), id,id);
     // }
 
 
@@ -90,5 +81,9 @@ public class ProfileRepository {
 
     public Relationship getRelationshipByIDs(Integer id1, Integer id2){
         return template.queryForObject(SQL_GET_RELATIONSHIP_BY_IDS, Relationship.class, id1,id2);
+    }
+
+    public Integer updateUserNameByID(String updateName, Integer id){
+        return template.update(SQL_PROFILE_UPDATE_USERNAME_BY_ID, updateName,id);
     }
 }

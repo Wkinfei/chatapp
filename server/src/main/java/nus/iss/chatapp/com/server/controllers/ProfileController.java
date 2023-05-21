@@ -10,19 +10,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import nus.iss.chatapp.com.server.models.FriendProfile;
 import nus.iss.chatapp.com.server.models.ProfileDetail;
 import nus.iss.chatapp.com.server.models.Relationship;
-import nus.iss.chatapp.com.server.repositories.ProfileRepository;
 import nus.iss.chatapp.com.server.services.ProfileService;
 import nus.iss.chatapp.com.server.services.SocketProfileService;
 import nus.iss.chatapp.com.server.utils.Utils;
@@ -35,9 +32,6 @@ public class ProfileController {
 
     @Autowired
     SocketProfileService socketProfileService;
-
-    @Autowired
-    ProfileRepository profileRepo;
     
   @GetMapping(path="/{id}")
   public List<FriendProfile> getFriendProfiles(@PathVariable Integer id){
@@ -48,12 +42,6 @@ public class ProfileController {
    public List<Relationship> getRelationships(){
     return profileService.getAllRelationships();
    }
-
-  //  @DeleteMapping(path="/{userId}/{friendId}")
-    //  public void deleteFriend(@PathVarriable Integer userId, @PathVarriable Integer friendId) {
-
-  //  @DeleteMapping(path="/{friendId}")
-  // public void deleteFriend(@RequestBody ProfileDetail payload, @PathVarriable Integer friendId) {
 
    @DeleteMapping()
    public ResponseEntity<Void> deleteRelationship(@RequestBody Relationship rs) {
@@ -94,13 +82,25 @@ public class ProfileController {
         
         }
 
-      //  @PostMapping("/test")
-      //  public void test(@RequestParam Integer id1, @RequestParam Integer id2){
-      //   socketProfileService.updateAdd(id1, id2);
-      //  }
+      @PutMapping("/{id}")
+      public ResponseEntity<String> updateUserName(@RequestBody String json,@PathVariable Integer id){
+        JsonObject j = Utils.toJson(json);
+        String userName = j.getString("displayName");
+        Integer counts = profileService.updateUserNameByID(userName, id);
+        // System.out.println("update>>>"+ counts);
+        if(counts == 0){
+          return ResponseEntity
+                  .status(HttpStatus.BAD_REQUEST)
+                  .contentType(MediaType.APPLICATION_JSON)
+                    .body(Json.createObjectBuilder()
+                             .add("message"," ")
+                             .build().toString());
+        }
+         //socket
+         socketProfileService.updateUserName(id);
+         return ResponseEntity
+                 .status(HttpStatus.ACCEPTED)
+                 .build();
+      }
 
-  // @GetMapping("/test")
-  // public void test(@RequestParam Integer id1, @RequestParam Integer id2){
-  //   profileRepo.checkRelationshipExist(id1, id2);
-  // }
 }

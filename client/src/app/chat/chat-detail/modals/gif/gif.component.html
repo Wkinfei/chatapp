@@ -1,1 +1,5 @@
-<p>gif works!</p>
+<div style="display: flex; flex-wrap: wrap;">
+    <div *ngFor="let gif of gifs; let idx=index" (click)="onClick(gif)">
+        <img [src]="gif.nanoGifUrl" >
+    </div>
+</div>

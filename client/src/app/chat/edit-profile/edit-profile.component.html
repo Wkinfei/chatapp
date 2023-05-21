@@ -1,0 +1,17 @@
+<form [formGroup]="editProfileForm" (ngSubmit)="processForm()">
+    <h3>Enter a new UserName</h3>
+    <table>
+        <tr>
+            <td>New UserName:</td>
+            <td><input type="text" formControlName="displayName"></td>
+        </tr>
+    </table>
+    <div>
+        <button type="button" (click)="cancel()">Cancel</button>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+<h1>
+    ADD SVG IMAGE
+</h1>

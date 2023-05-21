@@ -38,4 +38,8 @@ public class Quries {
     public static final String SQL_PROFILE_GET_BY_ID = """
         SELECT * FROM user_profiles WHERE user_id = ?;
             """;
+
+    public static final String SQL_PROFILE_UPDATE_USERNAME_BY_ID = """
+        UPDATE user_profiles SET display_name = ? WHERE user_id = ?;
+            """;
 }

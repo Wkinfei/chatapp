@@ -15,8 +15,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.mongodb.client.result.DeleteResult;
-
 import nus.iss.chatapp.com.server.models.MessageDetail;
 import nus.iss.chatapp.com.server.utils.GenericAggregationOperation;
 import nus.iss.chatapp.com.server.utils.Utils;
@@ -47,6 +45,7 @@ public class MessageMongoRepository {
                     "chatId": "$message.chatId",
                     "senderId": "$message.senderId", 
                     "text" : "$message.text",
+                    "msgType" : "$message.msgType",
                     "msgTime": {$toString: "$message.msgTime"}
                     }
             }
@@ -71,6 +70,7 @@ public class MessageMongoRepository {
                             "chatId": "$message.chatId",
                             "senderId": "$message.senderId", 
                             "text" : "$message.text",
+                            "msgType" : "$message.msgType",
                             "msgTime": "$message.msgTime"
                             }
                     }
@@ -81,7 +81,7 @@ public class MessageMongoRepository {
          AggregationOperation projectMessage = new GenericAggregationOperation(MONGO_PROJECT_MESSAGE);  
          AggregationOperation projectResult = new GenericAggregationOperation(MONGO_PROJECT_RESULT);    
          Aggregation pipeline = Aggregation.newAggregation(sortMsgTime,groupChatId,projectMessage,projectResult);
-         System.out.println("pipeline>>>>"+pipeline);
+        //  System.out.println("pipeline>>>>"+pipeline);
 
         AggregationResults<Document> res = mongoTemplate.aggregate(pipeline, "messages", Document.class);
       
@@ -90,17 +90,21 @@ public class MessageMongoRepository {
 
     public List<MessageDetail> getMessagesByChatId(Integer chatId){
         /*
-         db.getCollection("messages").find({"chatId" : NumberInt(7)})
+         db.getCollection("messages").find({"chatId" : NumberInt(7)}).sort({"msgTime":-1})
          */
 
          Criteria criteria = Criteria.where("chatId").is(chatId);
-         Query query = Query.query(criteria);
+         Query query = Query.query(criteria).with(
+            Sort.by(Sort.Direction.ASC,"msgTime")
+        );
 
          List<Document> results = mongoTemplate.find(query, Document.class, "messages");
 
          List<MessageDetail> messages = results.stream() 
             .map(x -> Utils.toMessageDetail(x))
             .toList();
+
+            
 
         return messages;
     }
@@ -115,8 +119,7 @@ public class MessageMongoRepository {
         }])
          */
 
-         Document document = mongoTemplate
-                                .insert(Utils.toDocument(message), "messages");
+         mongoTemplate.insert(Utils.toDocument(message), "messages");
     }
 
     public void deleteMessages(Integer chatId){
@@ -132,24 +135,24 @@ public class MessageMongoRepository {
         // System.out.println("deleteMessage>>>"+ result.toString());
     }
 
-    // public MessageDetail getLatestMessageDetailByChatId(Integer chatId){
-    //     /*
-    //       db.getCollection("messages")
-    //       .find({"chatId":3},{"_id":0})
-    //       .sort({"msgTime":-1})
-    //       .limit(1);
-    //      */
+    public MessageDetail getLatestMessageDetailByChatId(Integer chatId){
+        /*
+          db.getCollection("messages")
+          .find({"chatId":3},{"_id":0})
+          .sort({"msgTime":-1})
+          .limit(1);
+         */
 
-    //      Criteria criteria = Criteria.where("chatId").is(chatId);
-    //      Query query = Query.query(criteria)
-    //                     .with(
-    //                         Sort.by(Sort.Direction.DESC,"msgTime")
-    //                     ).limit(1);
-    //                     query.fields()
-    //                     .exclude("_id");
-    //         Document doc = mongoTemplate.findOne(query, Document.class);
+         Criteria criteria = Criteria.where("chatId").is(chatId);
+         Query query = Query.query(criteria)
+                        .with(
+                            Sort.by(Sort.Direction.DESC,"msgTime")
+                        ).limit(1);
+                        query.fields()
+                        .exclude("_id");
+            Document doc = mongoTemplate.findOne(query, Document.class);
 
-    //         return Utils.toMessageDetail(doc);
-    // }
+            return Utils.toMessageDetail(doc);
+    }
    
 }

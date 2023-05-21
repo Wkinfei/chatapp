@@ -4,12 +4,13 @@ import { ChatHomeComponent } from './chat/chat-home/chat-home.component';
 import { ChatDetailComponent } from './chat/chat-detail/chat-detail.component';
 import { ChatBannerComponent } from './chat/chat-banner/chat-banner.component';
 import { AddFriendComponent } from './chat/add-friend/add-friend.component';
+import { EditProfileComponent } from './chat/edit-profile/edit-profile.component';
 
 const routes: Routes = [
   { path: 'chat', component: ChatHomeComponent, children: [
     { path: '', component: ChatBannerComponent },
     { path: 'add-friend', component: AddFriendComponent },
-    // { path: 'edit-profile', component: ChatHomeComponent },
+    { path: 'edit-profile', component: EditProfileComponent },
     { path: ':id', component: ChatDetailComponent },
   ]
 }

@@ -5,6 +5,7 @@ import { FriendProfiles, Relationship } from "../models/profiles";
 import { HttpClient } from "@angular/common/http";
 import { RxStompService } from "../rx-stomp/rx-stomp.service";
 import { Router } from "@angular/router";
+import { MessageDetail } from "../models/message";
 
 interface SearchResult {
 	profiles: FriendProfiles[];
@@ -51,14 +52,20 @@ export class ProfileService {
 	this.sub$ = this.rxStompService
             .watch(`/notifications/profiles/${this.userId}`)
             .subscribe((data) => 
-				{ let json = JSON.parse(data.body)
+				{ let json = JSON.parse(data.body);
+					// console.log(json)
 					switch(json['type']) {
 						case "delete":
 							this.onDeleteFriend(json)
 							break;
 						case "add":
 							this.onAddProfile(json)
-							// console.log(json)
+							break;
+						case "message":
+							this.onNewMsg(json)
+							break;
+						case "edit":
+							this.onEditName(json)
 							break;
 						default:
 							console.log(json)
@@ -123,7 +130,11 @@ export class ProfileService {
 	public getFriendProfiles(id: number){
 		this.httpGetFriendProfiles(id)
 				.subscribe(x => {
-					this.profiles = x;
+					this.profiles = x.sort((a, b) => {
+						const timeA = new Date(a.msgTime).getTime();
+						const timeB = new Date(b.msgTime).getTime();
+						return timeB - timeA;
+					  });
 					this.refreshProfiles();
 				})
 	}
@@ -136,15 +147,14 @@ export class ProfileService {
         this.httpClient.post(`${this.URI}/profiles/${id}/addfriend`,payload).subscribe();
     }
 
-	onAddProfile(json:any){
-		this.profiles.push(json['profile']);
-		this.refreshProfiles();
-	}
-
     removeProfile(friendId: number) {
 		 const relationship: Relationship = {userId1: friendId, userId2: this.userId}
 		 this.httpClient.delete(`${this.URI}/profiles`, {body: relationship}).subscribe();
     }
+
+	upDateNameById(id:number, payload:{name:string}){
+		this.httpClient.put(`${this.URI}/profiles/${id}`,payload).subscribe();
+	}
 
 	onDeleteFriend(json:any){
 		const idx = this.profiles
@@ -154,6 +164,31 @@ export class ProfileService {
 						}
 						this.refreshProfiles();
 						this.router.navigate(["/chat"])
+	}
+
+	onAddProfile(json:any){
+		this.profiles.unshift(json['profile']);
+		this.refreshProfiles();
+	}
+
+	onNewMsg(json:any){
+		const idx = this.profiles
+			.findIndex(x => x.userId === json['profile'].userId);
+		if (idx >= 0) {
+			this.profiles.splice(idx, 1);
+			this.profiles.unshift(json['profile'])
+		}
+		this.refreshProfiles();
+	}
+
+	onEditName(json:any){
+		const idx = this.profiles
+			.findIndex(x => x.userId === json['profile'].userId);
+		if (idx >= 0) {
+			//push back to the same index
+			this.profiles.splice(idx, 1,json['profile']);
+		}
+		this.refreshProfiles();
 	}
 
 	public refreshProfiles() {

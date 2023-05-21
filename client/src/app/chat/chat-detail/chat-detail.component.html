@@ -1,35 +1,23 @@
+
+
 <div *ngFor="let message of messages">
-
-    <!-- <img *ngIf="message?.type === 'image'" [src]="message?.image"/>
-    <span *ngIf="message?.type === 'text'">{{message.senderId}} {{message.text}} {{message.msgTime | date: 'short'}}</span> -->
-    <span>{{message.senderId}} {{message.text}} {{message.msgTime | date: 'short'}}</span>
-
+    <div *ngIf="message?.msgType === 'image'">
+        {{message.senderId}}
+        <img [src]="message?.text"/>
+        {{message.msgTime | date: 'short'}}
+    </div>
+    <div *ngIf="message?.msgType === 'text'">
+        {{message.senderId}} {{message.text}} {{message.msgTime | date: 'short'}}
+    </div>
 </div>
 
-<form [formGroup]="chatForm" (ngSubmit)="onSendMessage()">
-    <!-- <input type="text" formControlName="text"> -->
-    <input [ngModel]="myProperty$ | async" 
-    (ngModelChange)="myProperty$.next($event)" 
-    formControlName="text"> 
-    <h1>{{ myProperty$ | async }}</h1>
+<form (ngSubmit)="onSendMessage()">
+    <input type="text" 
+        [ngModel]="myProperty" 
+        (ngModelChange)="ngModelChange($event)" 
+        name="myProperty"> 
+    <h1>{{ myProperty }}</h1>
     <div>
         <button type="submit" >send</button>
     </div>
 </form>
-
-<!-- <form #chatForm="ngForm" (ngSubmit)="onSendMessage()">
-  
-    <input [ngModel]="myProperty$ | async" 
-    (ngModelChange)="myProperty$.next($event)"> 
-    <h1>{{ myProperty$ | async }}</h1>
-    <div>
-        <button type="submit" >send</button>
-    </div>
-</form> -->
-
-
-<div style="display: flex; flex-wrap: wrap;">
-    <div *ngFor="let gif of gifs; let idx=index">
-        <img [src]="gif.tinyGifUrl" >
-    </div>
-</div>

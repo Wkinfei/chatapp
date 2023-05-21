@@ -47,4 +47,8 @@ export class ChatFriendListComponent {
     onAddFriend(){
       this.router.navigate(["/chat/add-friend"])
     }
+
+    onEditProfile(){
+      this.router.navigate(["/chat/edit-profile"])
+    }
 }

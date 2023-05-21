@@ -24,6 +24,7 @@ import nus.iss.chatapp.com.server.repositories.ProfileRepository;
 import nus.iss.chatapp.com.server.services.GifService;
 import nus.iss.chatapp.com.server.services.MessageService;
 import nus.iss.chatapp.com.server.services.SocketMessageService;
+import nus.iss.chatapp.com.server.services.SocketProfileService;
 import nus.iss.chatapp.com.server.utils.Utils;
 
 
@@ -45,14 +46,17 @@ public class ChatController {
 
     @Autowired
     GifService gifService;
+
+    @Autowired
+    SocketProfileService socketProfileService;
     
     @PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE)
     public void sendMessage(@RequestBody MessageDetail payload) {
-
         // System.out.println("payload at controller"+ payload);
         messageService.insertMessage(payload);
         socketMessageService.sendMessage(payload);
         //Add socketProfile
+        socketProfileService.updateNewMsg(payload);
     }
 
     @GetMapping(path="/{chatId}")

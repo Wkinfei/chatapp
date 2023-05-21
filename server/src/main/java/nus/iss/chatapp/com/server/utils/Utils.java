@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import jakarta.json.Json;
@@ -15,10 +16,12 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import nus.iss.chatapp.com.server.models.MessageDetail;
 import nus.iss.chatapp.com.server.models.ProfileDetail;
+import nus.iss.chatapp.com.server.models.Relationship;
 import nus.iss.chatapp.com.server.models.TenorGif;
+import nus.iss.chatapp.com.server.repositories.ProfileRepository;
 
 public class Utils {
-
+ 
     public static List<MessageDetail> fromMongoDocument(List<Document> docs) {
         List<MessageDetail> msgs = new LinkedList<>();
         
@@ -76,4 +79,6 @@ public class Utils {
                 .add("nanoGifUrl",gif.getNanoGifUrl())
                 .build();
     }
+
+    
 }

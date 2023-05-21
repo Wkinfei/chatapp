@@ -1,5 +1,6 @@
 package nus.iss.chatapp.com.server.services;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +28,9 @@ public class ProfileService {
     @Autowired 
     MessageMongoRepository messageMongoRepository;
 
-    public List<FriendProfile> getFriendProfiles(Integer id) {
+    public List<FriendProfile> getFriendProfiles(Integer userId) {
 
-        List<Relationship> relationships = profileRepo.getRelationships(id);
+        List<Relationship> relationships = profileRepo.getRelationships(userId);
         List<ProfileDetail> profiles = profileRepo.getProfileDetails();
         List<Document> docs = messageMongoRepository.getFriendListMessages();
         // List<MessageDetail> messages = Utils.fromMongoDocument(docs);
@@ -39,16 +40,6 @@ public class ProfileService {
                                     .map(d -> Utils.toMessageDetail(d))
                                     .toList();
 
-        System.out.println("rs >>" + relationships);
-
-        return FriendProfiles(profiles, relationships, messages, id);
-    }
-
-
-    private List<FriendProfile> FriendProfiles(List<ProfileDetail> profiles, 
-                    List<Relationship> relationships, 
-                    List<MessageDetail> messages, Integer myId) {
-
         // profiles <--> relationships <--> messages  ==> FriendProfile
 
         List<FriendProfile> friendProfiles = new LinkedList<>();
@@ -56,7 +47,7 @@ public class ProfileService {
         for (Relationship rs : relationships) {
             FriendProfile friendProfile = new FriendProfile();
             // Set FROM profiles
-                Integer id = (myId == rs.getUserId1()) ?  rs.getUserId2(): rs.getUserId1();
+                Integer id = (userId == rs.getUserId1()) ?  rs.getUserId2(): rs.getUserId1();
                 // ProfileDetail profileDetail = profiles.find( x => x.id === id)
                 ProfileDetail profileDetail = profiles.stream().filter(profile -> profile.getuserId() == id).findFirst().get();
                 friendProfile.setDisplayName(profileDetail.getDisplayName());
@@ -67,15 +58,15 @@ public class ProfileService {
                 Optional<MessageDetail> opt = messages.stream().filter(msg -> msg.getChatId() == rs.getChatId()).findFirst();
 
                 if(opt.isEmpty()) {
-                    // if not exist then set nulls
+
                     friendProfile.setText("no message");
-                    // friendProfile.setMsgTime();
-                    // OR set default in model
+                    // friendProfile.setMsgTime(LocalDateTime.now());
 
                 } else {
                     MessageDetail messageDetail = opt.get();
                     friendProfile.setText(messageDetail.getText());
                     friendProfile.setMsgTime(messageDetail.getMsgTime());
+                    friendProfile.setMsgType(messageDetail.getMsgType());
 
                 }
                 friendProfiles.add(friendProfile);                
@@ -128,10 +119,16 @@ public class ProfileService {
         }
     }
 
-    public FriendProfile getFriendProfile(Integer id1, Integer id2){
+    public Optional<FriendProfile> getFriendProfile(Integer userId, Integer friendId){
 
-        //get chat id to get msg
-        //id to get user profile
-        return null;
+        List<FriendProfile> friendProfiles = getFriendProfiles(userId);
+        Optional<FriendProfile> optFriendProfiles = friendProfiles.stream()
+                                                                .filter(profile -> profile.getUserId() == friendId)
+                                                                .findFirst();
+        return optFriendProfiles;
+    }
+
+    public Integer updateUserNameByID(String updateName, Integer id){
+        return profileRepo.updateUserNameByID(updateName, id);
     }
 }

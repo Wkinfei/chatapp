@@ -16,6 +16,7 @@ import { DeleteComponent } from './chat/chat-friend-list/modals/delete/delete.co
 import { ChatBannerComponent } from './chat/chat-banner/chat-banner.component';
 import { AddFriendComponent } from './chat/add-friend/add-friend.component';
 import { GifComponent } from './chat/chat-detail/modals/gif/gif.component';
+import { EditProfileComponent } from './chat/edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { GifComponent } from './chat/chat-detail/modals/gif/gif.component';
     DeleteComponent,
     ChatBannerComponent,
     AddFriendComponent,
-    GifComponent
+    GifComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,

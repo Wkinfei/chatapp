@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import nus.iss.chatapp.com.server.models.FriendProfile;
+
 import nus.iss.chatapp.com.server.models.MessageDetail;
 import nus.iss.chatapp.com.server.models.UpdateFriend;
-import nus.iss.chatapp.com.server.models.UpdateMessage;
+
 
 @Service
 public class SocketService {
@@ -19,7 +19,7 @@ public class SocketService {
     @Autowired
     private SimpMessagingTemplate template;
 
-    public void sendMessage(Integer recvId, UpdateMessage update) {
+    public void sendMessage(Integer recvId, MessageDetail update) {
         template.convertAndSend(NOTIFICATIONS_MESSAGES.formatted(recvId), update);
     }
 
