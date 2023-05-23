@@ -1,0 +1,35 @@
+<div class="container">
+    <h2 class="border-top pt-4 text-center">Contact Us</h2>
+    <p class="pb-3 text-center">
+        We'd love to get in touch and learn more about you.<br>
+        So, send us a meesage and we'll reply as fast as we can.
+        </p>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-1">
+            <form [formGroup]="emailForm" (ngSubmit)="processForm()"
+                    class="d-flex flex-column justify-content-center m-auto" style="max-width: 500px;">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" formControlName="name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" formControlName="email">
+                    <div id="emailHelp" class="form-text"></div>
+                </div>
+
+                 <div class="mb-3">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="subject" class="form-control" id="subject" aria-describedby="subjectHelp" formControlName="subject">
+                    <div id="subjectHelp" class="form-text"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="content" class="form-label">What would you like to tell us?</label>
+                    <textarea class="form-control" name="content" id="content" cols="30" rows="5" formControlName="content"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="background-color: #f5b848;">Submit</button>
+            </form>
+      </div>
+</div>

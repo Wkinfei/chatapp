@@ -17,6 +17,10 @@ import { ChatBannerComponent } from './chat/chat-banner/chat-banner.component';
 import { AddFriendComponent } from './chat/add-friend/add-friend.component';
 import { GifComponent } from './chat/chat-detail/modals/gif/gif.component';
 import { EditProfileComponent } from './chat/edit-profile/edit-profile.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { LogInComponent } from './log-in/log-in.component';
+import { EmailComponent } from './landing-page/email/email.component';
 
 
 @NgModule({
@@ -29,7 +33,11 @@ import { EditProfileComponent } from './chat/edit-profile/edit-profile.component
     ChatBannerComponent,
     AddFriendComponent,
     GifComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    LandingPageComponent,
+    SignUpComponent,
+    LogInComponent,
+    EmailComponent
   ],
   imports: [
     BrowserModule,
