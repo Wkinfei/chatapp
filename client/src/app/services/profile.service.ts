@@ -5,7 +5,7 @@ import { FriendProfiles, Relationship } from "../models/profiles";
 import { HttpClient } from "@angular/common/http";
 import { RxStompService } from "../rx-stomp/rx-stomp.service";
 import { Router } from "@angular/router";
-import { MessageDetail } from "../models/message";
+
 
 interface SearchResult {
 	profiles: FriendProfiles[];
@@ -18,7 +18,7 @@ interface State {
 
 function matches(profile: FriendProfiles, term: string, pipe: PipeTransform) {
 	return (
-		profile.displayName.toLowerCase().includes(term.toLowerCase())
+		profile.username.toLowerCase().includes(term.toLowerCase())
 	);
 }
 

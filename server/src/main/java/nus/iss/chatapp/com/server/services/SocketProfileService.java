@@ -55,7 +55,7 @@ public class SocketProfileService {
 
         // FriendProfile profile1 = new FriendProfile();
         // profile1.setUserId(id1);
-        // profile1.setDisplayName(profileDetail1.getDisplayName());
+        // profile1.setDisplayName(profileDetail1.getUsername());
         // profile1.setImageUrl(profileDetail1.getImageUrl());
         // UpdateFriend update1 = new UpdateFriend();
         // update1.setType("add");
@@ -146,8 +146,8 @@ public class SocketProfileService {
 
     private UpdateFriend toUpdateFriend(String type, ProfileDetail profileDetail, MessageDetail msg) {
         FriendProfile profile = new FriendProfile();
-        profile.setUserId(profileDetail.getuserId());
-        profile.setDisplayName(profileDetail.getDisplayName());
+        profile.setUserId(profileDetail.getUserId());
+        profile.setUsername(profileDetail.getUsername());
         profile.setImageUrl(profileDetail.getImageUrl());
         if(null == msg) {
             profile.setMsgType("text");

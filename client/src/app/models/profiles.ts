@@ -1,6 +1,6 @@
 export interface FriendProfiles {
     userId: number;
-    displayName: string;
+    username: string;
     text: string;
     msgType: string;
     msgTime: Date ;
@@ -18,11 +18,11 @@ export interface UpdatedProfiles{
   profile:FriendProfiles
 }
 
-export interface UserProfile{
-  userId: number;
-  loginUsername:string;
-  loginPassword:string;
-  displayName:string;
-  email:string;
-  imageUrl:string;
-}
+// export interface UserProfile{
+//   userId: number;
+//   loginUsername:string;
+//   loginPassword:string;
+//   username:string;
+//   email:string;
+//   imageUrl:string;
+// }

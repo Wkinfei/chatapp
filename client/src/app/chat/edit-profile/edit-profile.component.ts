@@ -22,7 +22,7 @@ export class EditProfileComponent implements OnInit{
 
   createForm(){
     let grp = this.fb.group({
-      displayName : this.fb.control<string>('')
+      username : this.fb.control<string>('')
     });
     return grp;
   }

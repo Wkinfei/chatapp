@@ -1,12 +1,12 @@
 package nus.iss.chatapp.com.server.services;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +18,11 @@ import nus.iss.chatapp.com.server.models.Relationship;
 import nus.iss.chatapp.com.server.repositories.MessageMongoRepository;
 import nus.iss.chatapp.com.server.repositories.ProfileRepository;
 import nus.iss.chatapp.com.server.utils.Utils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+
+
 
 @Service
 public class ProfileService {
@@ -27,6 +32,12 @@ public class ProfileService {
 
     @Autowired 
     MessageMongoRepository messageMongoRepository;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtEncoder jwtEncoder;
 
     public List<FriendProfile> getFriendProfiles(Integer userId) {
 
@@ -49,10 +60,10 @@ public class ProfileService {
             // Set FROM profiles
                 Integer id = (userId == rs.getUserId1()) ?  rs.getUserId2(): rs.getUserId1();
                 // ProfileDetail profileDetail = profiles.find( x => x.id === id)
-                ProfileDetail profileDetail = profiles.stream().filter(profile -> profile.getuserId() == id).findFirst().get();
-                friendProfile.setDisplayName(profileDetail.getDisplayName());
+                ProfileDetail profileDetail = profiles.stream().filter(profile -> profile.getUserId() == id).findFirst().get();
+                friendProfile.setUsername(profileDetail.getUsername());
                 friendProfile.setImageUrl(profileDetail.getImageUrl());
-                friendProfile.setUserId(profileDetail.getuserId());
+                friendProfile.setUserId(profileDetail.getUserId());
             // Set FROM messages
                 // Message message = messages.find(x => x.chatId === rs.chatId)
                 Optional<MessageDetail> opt = messages.stream().filter(msg -> msg.getChatId() == rs.getChatId()).findFirst();
@@ -108,8 +119,8 @@ public class ProfileService {
 
     public Integer addRelationship(Integer id1, String email){
         ProfileDetail user = profileRepo.getUserProfileByEmail(email);
-        Integer userId1 = Math.min(id1,user.getuserId());
-        Integer userId2 = Math.max(id1,user.getuserId());
+        Integer userId1 = Math.min(id1,user.getUserId());
+        Integer userId2 = Math.max(id1,user.getUserId());
 
         //if validate = 1 {insert sql}
         if(profileRepo.checkRelationshipExist(userId1, userId2) == false){
@@ -130,5 +141,33 @@ public class ProfileService {
 
     public Integer updateUserNameByID(String updateName, Integer id){
         return profileRepo.updateUserNameByID(updateName, id);
+    }
+
+    public Integer addNewUser(ProfileDetail detail){
+
+        if (profileRepo.checkUserProfileExistsByEmail(detail.getEmail()) == false) {
+
+            return profileRepo.insertNewUserProfile(detail);
+
+        } else {
+            return 0;
+        }
+    }
+
+    public String authenticateUser(String email, String password) {
+
+        UsernamePasswordAuthenticationToken authRequest = 
+            UsernamePasswordAuthenticationToken.unauthenticated(email,password);
+
+        Authentication authentication = authenticationManager.authenticate(authRequest);
+        
+        if(!authentication.isAuthenticated()) {
+            // not authenticated    
+        } 
+
+        ProfileDetail profileDetail = profileRepo.getUserProfileByEmail(email);
+        
+        return Utils.generateJwtToken(authentication, profileDetail, jwtEncoder);
+        
     }
 }

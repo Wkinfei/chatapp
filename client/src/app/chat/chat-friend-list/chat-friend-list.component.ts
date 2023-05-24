@@ -35,7 +35,7 @@ export class ChatFriendListComponent {
     openDelete(profile: FriendProfiles) {
       const modalRef = this.modalService.open(DeleteComponent);
       modalRef.componentInstance.id = profile.userId;
-      modalRef.componentInstance.name = profile.displayName;
+      modalRef.componentInstance.name = profile.username;
       modalRef.result
         .then(id => { if(typeof(id) !== "string") {console.log(id); this.service.removeProfile(id)}})
         .catch(err => console.log(err));

@@ -1,6 +1,6 @@
 package nus.iss.chatapp.com.server.controllers;
 
-import java.io.UnsupportedEncodingException;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
-import jakarta.mail.MessagingException;
-import nus.iss.chatapp.com.server.models.Email;
 import nus.iss.chatapp.com.server.models.FriendProfile;
 import nus.iss.chatapp.com.server.models.ProfileDetail;
 import nus.iss.chatapp.com.server.models.Relationship;
-import nus.iss.chatapp.com.server.services.EmailSenderService;
 import nus.iss.chatapp.com.server.services.ProfileService;
 import nus.iss.chatapp.com.server.services.SocketProfileService;
 import nus.iss.chatapp.com.server.utils.Utils;
@@ -79,7 +76,7 @@ public class ProfileController {
         }
           //socket
           ProfileDetail profile = profileService.getProfileDetail(email);
-          socketProfileService.updateAdd(id, profile.getuserId());
+          socketProfileService.updateAdd(id, profile.getUserId());
           return ResponseEntity
                   .status(HttpStatus.ACCEPTED)
                   .build();

@@ -3,6 +3,7 @@ package nus.iss.chatapp.com.server.services;
 import java.io.UnsupportedEncodingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,25 @@ public class EmailSenderService {
     @Autowired
     JavaMailSender javaMailSender;
 
+    @Value("${spring.mail.username}")
+    String toEmail;
+
     public void SendEmail(String name, String email, String content, String subject) throws MessagingException, UnsupportedEncodingException{
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        
-        String toEmail = "WhatsChat2023@gmail.com";
-        String mailContent = "<p style=\"color: blue\"><b>Sender Email:<b> "+ email + "</p>";
-        mailContent += "<p><b>Name:<b> "+ name + "</p>";
-        mailContent += "<p><b>Content:<b> "+ content + "</p>";
 
-        helper.setFrom("WhatsChat2023@gmail.com","WhatsChat FAQ");
+        String mailContent = 
+        """
+            <p style=\"color: blue\"><b>Sender Email:<b> %s</p>
+            <p><b>Name:<b> %s</p>
+            <p><b>Content:<b> %s</p>
+        """.formatted(email, name, content);
+        
+        // String mailContent = "<p style=\"color: blue\"><b>Sender Email:<b> "+ email + "</p>";
+        // mailContent += "<p><b>Name:<b> "+ name + "</p>";
+        // mailContent += "<p><b>Content:<b> "+ content + "</p>";
+
+        helper.setFrom(toEmail,"WhatsChat FAQ");
         helper.setTo(toEmail);
         helper.setSubject(subject);
         helper.setText(mailContent, true);

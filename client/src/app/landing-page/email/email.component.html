@@ -10,26 +10,51 @@
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" formControlName="name">
+                        <div class="text-danger" 
+                            *ngIf="emailForm.get('name')?.hasError('required') && 
+                                    (emailForm.get('name')?.dirty || 
+                                    emailForm.get('name')?.touched) ">
+                            Please enter your name
+                        </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" formControlName="email">
+                    <input type="email" class="form-control" 
+                     id="email" aria-describedby="emailHelp" formControlName="email">
+                        <div class="text-danger" 
+                            *ngIf="emailForm.get('email')?.hasError('email')&& 
+                                (emailForm.get('email')?.dirty || 
+                                emailForm.get('email')?.touched) ">
+                            Please enter a valid email
+                        </div>
                     <div id="emailHelp" class="form-text"></div>
                 </div>
 
                  <div class="mb-3">
                     <label for="subject" class="form-label">Subject</label>
                     <input type="subject" class="form-control" id="subject" aria-describedby="subjectHelp" formControlName="subject">
+                    <div class="text-danger" 
+                        *ngIf="emailForm.get('subject')?.hasError('required') && 
+                            (emailForm.get('subject')?.dirty || 
+                            emailForm.get('subject')?.touched) ">
+                        Please enter a subject regards to your question.
+                    </div>
                     <div id="subjectHelp" class="form-text"></div>
                 </div>
 
                 <div class="mb-3">
                     <label for="content" class="form-label">What would you like to tell us?</label>
                     <textarea class="form-control" name="content" id="content" cols="30" rows="5" formControlName="content"></textarea>
+                    <div class="text-danger" 
+                        *ngIf="emailForm.get('text')?.hasError('required') && 
+                            (emailForm.get('text')?.dirty || 
+                            emailForm.get('text')?.touched) ">
+                        Please enter your question.
+                    </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="background-color: #f5b848;">Submit</button>
+                <button type="submit" class="btn btn-warning" style="background-color: #f5b848; border-color:white;"  [disabled]="emailForm.invalid">Submit</button>
             </form>
       </div>
 </div>

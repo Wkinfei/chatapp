@@ -40,6 +40,15 @@ public class Quries {
             """;
 
     public static final String SQL_PROFILE_UPDATE_USERNAME_BY_ID = """
-        UPDATE user_profiles SET display_name = ? WHERE user_id = ?;
+        UPDATE user_profiles SET username = ? WHERE user_id = ?;
             """;
+
+    public static final String SQL_PROFILE_CHECK_EMAIL_IS_EXISTS = """
+        SELECT EXISTS(SELECT * from user_profiles WHERE email=?) AS isExist;
+            """;
+
+    public static final String SQL_PROFILE_INSERT_NEW_USER = """
+        INSERT INTO user_profiles (username, password, email, image_url, role, enabled) VALUES(?,?,?,?,?,?);
+            """;
+ 
 }

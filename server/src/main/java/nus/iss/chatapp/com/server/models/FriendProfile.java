@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter @Setter @NoArgsConstructor @ToString
 public class FriendProfile {
     private Integer userId;
-    private String displayName;
+    private String username;
     private String imageUrl;
     private String text;
     private LocalDateTime msgTime;

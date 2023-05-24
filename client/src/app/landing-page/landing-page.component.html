@@ -2,7 +2,7 @@
   <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
       <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-        <img class="bi me-2" width="60" height="48" aria-label="Logo" src="/assets/logo.svg"/> CanChat
+        <img class="bi me-2" width="60" height="48" aria-label="Logo" src="/assets/chatlogo.svg"/> WhatsChat
         <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg> -->
       </a>
 
@@ -14,13 +14,13 @@
       </ul>
 
       <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-outline-warning me-2" style="outline-color: #f5b848;">Login</button>
-        <button type="button" class="btn btn-warning"style="background-color: #f5b848;">Sign-up</button>
+        <button type="button" class="btn btn-outline-warning me-2" style="outline-color: #f5b848;" [routerLink]="['/log-in']">Login</button>
+        <button type="button" class="btn btn-warning"style="background-color: #f5b848;" [routerLink]="['/sign-up']">Sign-up</button>
       </div>
     </header>
   </div>
-
-  <div class="me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-dark overflow-hidden" style="background-color: #c2d9e2;">
+<!-- #c2d9e2 -->
+  <div class="me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-dark overflow-hidden" style="background-color: #f0dbab;">
     <div class="my-3 py-3">
       <h2 class="display-5">Another headline</h2>
       <p class="display-7">And an even wittier subheading.</p>
@@ -30,7 +30,7 @@
             <img class="bi me-2" width="300" height="300" src="/assets/landingpagechat.avif"/>
         </div>
         <div>
-            <button type="button" class="btn btn-warning"  style="background-color: #f5b848;"> Let's Talk</button>
+            <button type="button" class="btn btn-warning"  style="background-color: #f5b848; border-color:white;" [routerLink]="['/sign-up']"> Let's Talk</button>
         </div>
     
     </div>

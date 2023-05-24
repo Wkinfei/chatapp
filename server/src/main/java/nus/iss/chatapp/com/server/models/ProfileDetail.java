@@ -1,56 +1,32 @@
 package nus.iss.chatapp.com.server.models;
 
+import java.util.UUID;
+import nus.iss.chatapp.com.server.utils.Utils;
+
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter @Setter @NoArgsConstructor @ToString
 public class ProfileDetail {
     private Integer userId;
-    private String loginUsername;
-    private String loginPassword;
-    private String displayName;
+    private String username;
+    private String password;
     private String email;
     private String imageUrl;
-    
-    public Integer getuserId() {
-        return userId;
-    }
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-    public String getLoginUsername() {
-        return loginUsername;
-    }
-    public void setLoginUsername(String loginUsername) {
-        this.loginUsername = loginUsername;
-    }
-    public String getLoginPassword() {
-        return loginPassword;
-    }
-    public void setLoginPassword(String loginPassword) {
-        this.loginPassword = loginPassword;
-    }
-    public String getDisplayName() {
-        return displayName;
-    }
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
+    private String role = "ROLE_USER";
+    private Boolean enabled = true;
+
+    public ProfileDetail(String username, String password, String email) {
+        this.username = username;
+        // TODO: hashPassword 
+        this.password = Utils.hashPassword(password);
         this.email = email;
+        this.imageUrl = "https://robohash.org/%s.png?set=set4&size=100x100"
+                            .formatted(UUID.randomUUID().toString().substring(0, 16));
     }
-    public String getImageUrl() {
-        return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-    @Override
-    public String toString() {
-        return "ProfileDetail [userId=" + userId + ", loginUsername=" + loginUsername + ", loginPassword="
-                + loginPassword + ", displayName=" + displayName + ", email=" + email + ", imageUrl=" + imageUrl + "]";
-    }
-  
 
-    
-
+   
 }

@@ -18,23 +18,6 @@ public class ProfileRepository {
     @Autowired
     JdbcTemplate template;
 
-    // public List<ProfileDetail> findProfilesById(Integer id1) {
-    //     // List<ProfileDetail> profileDetails = new LinkedList<>();
-
-    //     // SqlRowSet rs = template.queryForRowSet(SQL_GET_FRIEND_PROFILE_DETAILS );
-
-    //     // while(rs.next()){
-    //     //     profileDetails.add(Utils.fromSQL(rs));
-    //     // }
-
-    //     //new BeanPropertyRowMapper<>(ProfileDetail.class) will map the sql object to model object
-    //     return template.query(SQL_PROFILE_SELECT_BY_ID, 
-    //                         new BeanPropertyRowMapper<>(ProfileDetail.class), 
-    //                         id1, id1);
-
-    // }
-
-
     public List<Relationship> getRelationships(Integer id){
         return template.query(SQL_RELATIONSHIP_GET_RELATIONSHIPS_BY_ID, new BeanPropertyRowMapper<>(Relationship.class), id, id);
     }
@@ -67,7 +50,6 @@ public class ProfileRepository {
         Boolean isExists = template.queryForObject(
                                         SQL_RELATIONSHIP_CHECK_IDS_IS_EXISTS,
                                          Boolean.class, id1,id2);
-        // System.out.println("isExists --> " + isExists);
         return isExists;   
     }
 
@@ -85,5 +67,21 @@ public class ProfileRepository {
 
     public Integer updateUserNameByID(String updateName, Integer id){
         return template.update(SQL_PROFILE_UPDATE_USERNAME_BY_ID, updateName,id);
+    }
+
+    public Boolean checkUserProfileExistsByEmail(String email){
+        Boolean isExists = template.queryForObject(
+                                        SQL_PROFILE_CHECK_EMAIL_IS_EXISTS,
+                                         Boolean.class, email);
+        return isExists;   
+    }
+
+    public Integer insertNewUserProfile(ProfileDetail detail){
+
+       Integer inserted =  template.update(SQL_PROFILE_INSERT_NEW_USER, 
+                                        detail.getUsername(), detail.getPassword(), 
+                                        detail.getEmail(), detail.getImageUrl(), 
+                                        detail.getRole(), detail.getEnabled());
+        return inserted;
     }
 }

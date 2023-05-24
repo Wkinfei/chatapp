@@ -22,7 +22,7 @@ public class SocketMessageService {
     ProfileRepository profileRepository;
 
     public void sendMessage(MessageDetail msg) {
-        System.out.println(">>" + msg);
+        // System.out.println(">>" + msg);
         //use chatId and senderId to retrieve recieverId
         List<Relationship> relationships = profileRepository.getRelationships(msg.getSenderId());
     

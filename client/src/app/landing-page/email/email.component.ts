@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EmailService } from 'src/app/services/email.service';
 
@@ -15,21 +15,19 @@ export class EmailComponent implements OnInit{
 
   constructor( private fb : FormBuilder,
                 private emailSvc: EmailService ){
-
   }
   
   ngOnInit(): void {
     this.emailForm = this.createForm();
-  
   }
 
   //Add Validation
   createForm(): FormGroup {
     let grp = this.fb.group({
-      name: this.fb.control<string>(""),
-      email: this.fb.control<string>(""),
-      subject: this.fb.control<string>(""),
-      content: this.fb.control<string>("")
+      name: this.fb.control<string>("", [ Validators.required ]),
+      email: this.fb.control<string>("", [ Validators.required, Validators.email ]),
+      subject: this.fb.control<string>("", [ Validators.required ]),
+      content: this.fb.control<string>("", [ Validators.required ])
     });
     return grp;
   }
@@ -42,11 +40,4 @@ export class EmailComponent implements OnInit{
     this.emailForm.reset();
   }  
 
-  // ngOnDestroy(): void {
-  //   console.log("DESTROYYYYY")
-  //   if (this.email$){
-  //     this.email$.unsubscribe
-  //   }
-    
-  // }
 }
