@@ -31,7 +31,7 @@ public class GifService {
         .build()
         .toUriString();
 
-        System.out.println(uri);
+        // System.out.println(uri);
 
         RequestEntity<Void> req = RequestEntity
                                     .get(uri)

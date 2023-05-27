@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.json.Json;
@@ -64,16 +65,8 @@ public class ProfileController {
       JsonObject j = Utils.toJson(json);
       String email = j.getString("email");
     
-      Integer counts = profileService.addRelationship(id, email);
+      profileService.addRelationship(id, email);
 
-        if(counts == 0){
-          return ResponseEntity
-                  .status(HttpStatus.BAD_REQUEST)
-                  .contentType(MediaType.APPLICATION_JSON)
-                    .body(Json.createObjectBuilder()
-                             .add("message","Email doesn't exist...")
-                             .build().toString());
-        }
           //socket
           ProfileDetail profile = profileService.getProfileDetail(email);
           socketProfileService.updateAdd(id, profile.getUserId());
@@ -86,7 +79,7 @@ public class ProfileController {
       @PutMapping("/{id}")
       public ResponseEntity<String> updateUserName(@RequestBody String json,@PathVariable Integer id){
         JsonObject j = Utils.toJson(json);
-        String userName = j.getString("displayName");
+        String userName = j.getString("username");
         Integer counts = profileService.updateUserNameByID(userName, id);
         // System.out.println("update>>>"+ counts);
         if(counts == 0){
@@ -104,6 +97,13 @@ public class ProfileController {
                  .build();
       }
 
-      
+      @GetMapping("/userprofile/{id}")
+      public ResponseEntity<String> getProfile(@PathVariable Integer id){
+       // return only imageUrl & username
+       ProfileDetail userProfile = profileService.getProfileDetailById(id);
+        JsonObject j = Utils.toJsonObj(userProfile);
+        return ResponseEntity.ok()
+                              .body(j.toString());                  
+      }
 
 }

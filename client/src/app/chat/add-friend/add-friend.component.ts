@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProfileService } from 'src/app/services/profile.service';
+import { ToastService } from 'src/app/toast-container/toast.service';
 
 @Component({
   selector: 'app-add-friend',
@@ -10,28 +13,41 @@ import { ProfileService } from 'src/app/services/profile.service';
 })
 export class AddFriendComponent implements OnInit{
   addFriendForm!: FormGroup;
-  userId=1;
+  userId!:number;
 
   constructor( private fb: FormBuilder,
                 private router: Router,
-                public service: ProfileService ){}
+                public service: ProfileService,
+                private authService: AuthService,
+                private toastService: ToastService ){}
 
   ngOnInit(): void {
     this.addFriendForm = this.createForm();
+    this.authService.token$
+				.subscribe(user => {
+					if (user) this.userId = user.userId;
+				}
+				);
   }
 
   createForm(){
     let grp = this.fb.group({
-      email : this.fb.control<string>('')
+      email : this.fb.control<string>('',[ Validators.required, Validators.email ])
     });
     return grp;
   }
 
   processForm(){
-    // console.log("email>>>",this.addFriendForm.value['email'])
-    // console.log("email>>>",this.addFriendForm.value.email)
-    this.service.addProfile(this.userId,this.addFriendForm.value);
-    this.router.navigate(["/chat"]);
+    firstValueFrom(this.service.addProfile(this.userId,this.addFriendForm.value)).then(
+      () => {
+        this.addFriendForm.reset();
+        this.router.navigate(["/chat"]);
+        this.toastService.clear();
+        this.toastService.showSuccess("Let's chat!!");
+      })
+      .catch(() => {
+        this.toastService.showDanger("Oops.. an error as occured")
+      })
   }
 
   cancel(){

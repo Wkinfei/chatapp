@@ -86,6 +86,13 @@ public class Utils {
                 .build();
     }
 
+    public static JsonObject toJsonObj(ProfileDetail profile) {
+        return Json.createObjectBuilder()
+                .add("username",profile.getUsername())
+                .add("imageUrl",profile.getImageUrl())
+                .build();
+    }
+
     public static String hashPassword (String password) {
  
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

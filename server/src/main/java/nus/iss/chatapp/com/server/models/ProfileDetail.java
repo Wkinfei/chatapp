@@ -17,11 +17,10 @@ public class ProfileDetail {
     private String email;
     private String imageUrl;
     private String role = "ROLE_USER";
-    private Boolean enabled = true;
+    private Integer enabled = 1;
 
     public ProfileDetail(String username, String password, String email) {
         this.username = username;
-        // TODO: hashPassword 
         this.password = Utils.hashPassword(password);
         this.email = email;
         this.imageUrl = "https://robohash.org/%s.png?set=set4&size=100x100"

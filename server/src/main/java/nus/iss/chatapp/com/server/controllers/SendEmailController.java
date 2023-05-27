@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.mail.MessagingException;
-import nus.iss.chatapp.com.server.models.Email;
+import nus.iss.chatapp.com.server.models.EmailDetails;
 import nus.iss.chatapp.com.server.services.EmailSenderService;
 
 @RestController
@@ -21,7 +21,7 @@ public class SendEmailController {
     EmailSenderService emailSenderService;
     
     @PostMapping()
-      public ResponseEntity<Void> sendEmail(@RequestBody Email email) throws UnsupportedEncodingException, MessagingException{
+      public ResponseEntity<Void> sendEmail(@RequestBody EmailDetails email) throws UnsupportedEncodingException, MessagingException{
         
         emailSenderService.SendEmail(email.getName(),email.getEmail(),
                                     email.getContent(),email.getSubject());

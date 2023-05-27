@@ -1,0 +1,114 @@
+/* .parent{
+   display:flex;
+   flex-direction: column;
+   padding:1em;
+   margin: 0px;
+} */
+.friend-profile{
+    display: flex;
+   background-color:#f0dbab;
+   padding: 15px;
+   text-align: start;
+   position: fixed;
+   width: 100%;
+   top:0;
+   left:28.6%;
+   border: 2px solid burlywood;
+
+}
+.friend-profile img{
+    background-color:#f0e7d0;
+    border-radius: 100%;
+    border: 1px solid;
+    border-color:  rgba(30, 127, 192, 0.5);
+}
+
+.friend-profile p{
+    grid-area: name;
+    color: #232f81;
+    padding: 10px;
+    font-size:1.1rem;
+    font-weight: 700;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.messages {
+    flex:4;
+    display: grid;
+    row-gap: 5px;
+    justify-items: space-around;
+    max-width: 700px;
+    margin: auto;
+
+  
+}
+
+.message {
+    max-width:350px;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    /* white-space: nowrap; */
+
+  
+    
+  }
+  
+  .message p {
+    margin: 0px;
+    font-family:monospace;
+    overflow-wrap: break-word;
+  }
+  
+  .user-other {
+    place-self: start;
+    background: #f5b848;
+    color: rgb(239, 239, 241);
+  }
+  
+  .user-me {
+    place-self: end;
+    background: #f0dbab;
+    color: black
+  }
+
+.scroller * {
+    overflow-anchor: none;
+}
+
+.anchor{
+    overflow-anchor: auto !important;
+    height: 1px;
+}
+
+.keyboard{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100%;    
+    bottom: 4px;
+    left:28.6%;
+    border: 2px solidrgb(240, 234, 225);
+    background: rgb(240, 234, 225);
+    padding: auto;
+   
+}
+
+
+.keyboard .keyboard-input{
+    border: 6px white solid;
+    border-radius: 10px; 
+    padding: 0rem 0.5rem;
+    min-width: 250px;
+    max-width: 500px;
+    width: 400px;
+    font-size: 1rem;
+    font-family:monospace;
+    
+}
+  
+.send-btn{
+    border:0px;
+    background-color: rgb(240, 234, 225);
+}

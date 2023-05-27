@@ -7,7 +7,7 @@ import { ChatHomeComponent } from './chat/chat-home/chat-home.component';
 import { ChatFriendListComponent } from './chat/chat-friend-list/chat-friend-list.component';
 import { ChatDetailComponent } from './chat/chat-detail/chat-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { RxStompService } from './rx-stomp/rx-stomp.service';
 import { rxStompServiceFactory } from './rx-stomp/rx-stomp-service-factory';
 import { NgbPaginationModule, NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -21,6 +21,8 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { EmailComponent } from './landing-page/email/email.component';
+import { ToastContainerComponent } from './toast-container/toast-container.component';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { EmailComponent } from './landing-page/email/email.component';
     LandingPageComponent,
     SignUpComponent,
     LogInComponent,
-    EmailComponent
+    EmailComponent,
+    ToastContainerComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,14 @@ import { EmailComponent } from './landing-page/email/email.component';
     {
     provide: RxStompService,
     useFactory: rxStompServiceFactory,
-  }],
+    },
+    { 
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    },
+  ],
+    
   bootstrap: [AppComponent]
 })
 export class AppModule {}

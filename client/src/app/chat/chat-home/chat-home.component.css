@@ -1,38 +1,67 @@
-html {
-    height: 100%
-}
-
-body {
-    height: 100%;
-}
 
 .grid-container{
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: 1fr 3fr;
-    grid-template-areas: "friend body"
-                        "friend body";
-    column-gap: 10px;
-    /* justify-content: center;
-    align-content: center;
-    justify-items: center;
-    align-items:center; */
-    height: 500px;
+    grid-template-columns: 2fr 5fr ;
+    grid-template-areas: "friend body "   
+                          "friend body " ;                
+    margin: 0px;
+    height:691.2px;
 }
 
 .friend-list {
     grid-area: friend;
-    background-color: beige;
     width: 100%;
-    height:100%;
+    background-color: #f0dbab;
     border: 2px solid burlywood;
+    /* overflow-y: scroll; */
+    overflow-x: hidden;
+    padding: 1rem 0rem;
+   
     
 }
 
 .message-body {
     grid-area: body;
-    background-color: antiquewhite;
-    width: 100%;
-    height:100%;
-    border: 2px solid burlywood;
+    background-color: rgb(240, 234, 225);
+    border-top: 2px solid burlywood;
+    border-bottom: 2px solid burlywood;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 1rem ;
+    padding-bottom: 2rem;;
 }
+
+.message-space1{
+    grid-area: space1;
+    background-color: rgb(240, 234, 225);
+    border-top: 2px solid burlywood;
+    border-bottom: 2px solid burlywood;
+}
+
+.message-space2{
+    grid-area: space2;
+    background-color: rgb(240, 234, 225);
+    border-top: 2px solid burlywood;
+    border-bottom: 2px solid burlywood;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    display:none;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(241, 212, 173)
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f5b466;
+  }

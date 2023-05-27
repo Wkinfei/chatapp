@@ -42,8 +42,8 @@ public class JwtSecurityConfig {
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().passwordEncoder(new BCryptPasswordEncoder())
             .dataSource(dataSource)
-            .usersByUsernameQuery("select username, password, enabled from users where username=?")
-            .authoritiesByUsernameQuery("select username, role from users where username=?")
+            .usersByUsernameQuery("select email, password, enabled from user_profiles where email=?")
+            .authoritiesByUsernameQuery("select email, role from user_profiles where email=?")
         ;
     }
 	

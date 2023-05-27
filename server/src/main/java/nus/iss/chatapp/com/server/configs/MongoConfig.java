@@ -19,7 +19,7 @@ public class MongoConfig {
     
     @Bean
     public MongoTemplate createMongoTemplate() {
-        // create mongo client
+       
         MongoClient client = MongoClients.create(mongoUrl);
         return new MongoTemplate(client, dbName);
     }

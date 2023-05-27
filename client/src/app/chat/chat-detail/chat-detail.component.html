@@ -1,23 +1,42 @@
+<div class="parent">
 
-
-<div *ngFor="let message of messages">
-    <div *ngIf="message?.msgType === 'image'">
-        {{message.senderId}}
-        <img [src]="message?.text"/>
-        {{message.msgTime | date: 'short'}}
+    <!-- {{ friendProfile | async | json }} -->
+    <div class="friend-profile">
+        <img style=" width:75px; height: 75px;" [src]="friendProfile.imageUrl"/>
+        <p>{{friendProfile.username}}</p>
     </div>
-    <div *ngIf="message?.msgType === 'text'">
-        {{message.senderId}} {{message.text}} {{message.msgTime | date: 'short'}}
+
+    <div class="messages">
+        <div *ngFor="let message of messages" class="message" 
+        [ngClass]="message.senderId == userId ? 'user-me' : 'user-other'">
+            <div *ngIf="message?.msgType === 'image'" >
+                <img [src]="message?.text"/>
+                <br>
+                <p>{{message.msgTime | date: 'EEE h:mm a'}}</p>
+            </div>
+            <div *ngIf="message?.msgType === 'text'">
+           <p> {{message.text}}
+            <br>
+            {{message.msgTime | date: 'EEE h:mm a'}}
+            </p>
+            </div>
+        </div>
+        <div class="anchor"></div>
+    </div>
+    
+    <div class="keyboard">
+        <form (ngSubmit)="onSendMessage()">
+            <input class="keyboard-input" type="text" 
+                [ngModel]="myProperty" 
+                (ngModelChange)="ngModelChange($event)" 
+                name="myProperty" placeholder="message...."> 
+                <button class="send-btn" type="submit" [disabled]="!myProperty">
+                <img  width="35" height="30" src="/assets/send-message.svg">
+                
+                </button>  
+        </form>
     </div>
 </div>
 
-<form (ngSubmit)="onSendMessage()">
-    <input type="text" 
-        [ngModel]="myProperty" 
-        (ngModelChange)="ngModelChange($event)" 
-        name="myProperty"> 
-    <h1>{{ myProperty }}</h1>
-    <div>
-        <button type="submit" >send</button>
-    </div>
-</form>
+
+

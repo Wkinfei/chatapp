@@ -111,15 +111,7 @@ public class SocketProfileService {
                 Integer receiverId = (userId == rs.getUserId1())? rs.getUserId2() : rs.getUserId1();
                 receiverIds.add(receiverId);
         }
-        //loop thrug the ReceiverId to send to Q/ids
-        // for(Integer receiverId : receiverIds){
-        //     Optional<FriendProfile> optReceiverProfile = profileService.getFriendProfile(userId, receiverId);
-        //     if(optReceiverProfile.isEmpty()){
-        //         // TODO: Throw error
-        //     }
-        //     UpdateFriend updateReceiver = toUpdateFriend("edit", optReceiverProfile.get());
-        //     socketService.sendProfile(userId, updateReceiver);
-        // }
+      
         for(Integer receiverId : receiverIds){
             Optional<FriendProfile> optSenderProfile = profileService.getFriendProfile(receiverId,userId);
             if(optSenderProfile.isEmpty()){
@@ -152,7 +144,7 @@ public class SocketProfileService {
         if(null == msg) {
             profile.setMsgType("text");
             profile.setText("No Message");
-            // profile.setMsgTime(LocalDateTime.now());
+          
         } else {
             profile.setMsgType(msg.getMsgType());
             profile.setText(msg.getText());

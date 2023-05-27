@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { FriendProfiles } from 'src/app/models/profiles';
 import { ProfileService } from 'src/app/services/profile.service';
 import { DeleteComponent } from './modals/delete/delete.component';
+import { AuthService } from 'src/app/services/auth.service';
+import { ToastService } from 'src/app/toast-container/toast.service';
 
 @Component({
   selector: 'app-chat-friend-list',
@@ -20,7 +22,9 @@ export class ChatFriendListComponent {
   constructor(
     private router: Router,
     public service: ProfileService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private authSvc: AuthService,
+    private toastService: ToastService
     ){
       this.profiles$ = service.profiles$;
       this.total$ = service.total$;
@@ -37,7 +41,8 @@ export class ChatFriendListComponent {
       modalRef.componentInstance.id = profile.userId;
       modalRef.componentInstance.name = profile.username;
       modalRef.result
-        .then(id => { if(typeof(id) !== "string") {console.log(id); this.service.removeProfile(id)}})
+        .then(id => { if(typeof(id) !== "string") {this.toastService.showPrimary("Friend removed!!!"); 
+                                                    this.service.removeProfile(id)}})
         .catch(err => console.log(err));
       // modalRef.result
       //     .then(resolve => console.log("resolve --> ", resolve))
@@ -50,5 +55,12 @@ export class ChatFriendListComponent {
 
     onEditProfile(){
       this.router.navigate(["/chat/edit-profile"])
+    }
+
+    onLogOut(){
+      this.authSvc.logoutUser();
+      this.router.navigate(["/log-in"]);
+      //add toaster
+      
     }
 }

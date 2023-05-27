@@ -1,10 +1,11 @@
 import { Injectable, PipeTransform } from "@angular/core";
-import { BehaviorSubject, Observable, Subject, Subscription, debounceTime, delay, of, switchMap, tap } from "rxjs";
+import { firstValueFrom, BehaviorSubject, Observable, Subject, Subscription, debounceTime, delay, map, of, switchMap, take, tap, exhaustMap } from "rxjs";
 import { DecimalPipe } from "@angular/common";
 import { FriendProfiles, Relationship } from "../models/profiles";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { RxStompService } from "../rx-stomp/rx-stomp.service";
 import { Router } from "@angular/router";
+import { AuthService } from "./auth.service";
 
 
 interface SearchResult {
@@ -31,22 +32,31 @@ export class ProfileService {
 	private _search$ = new Subject<void>();
 	private _profiles$ = new BehaviorSubject<FriendProfiles[]>([]);
 	private _total$ = new BehaviorSubject<number>(0);
-
+	private _profile$ = new BehaviorSubject<FriendProfiles|null>(null);
 	private _state: State = {
 		searchTerm: '',
 	};
 
   private URI: string = "/api";
   profiles: FriendProfiles[] = [];
-  userId=1;
+  userId!:number;
   sub$!: Subscription;
+//   profile!: FriendProfiles;
+ 
 
 	constructor(private pipe: DecimalPipe,
               private httpClient: HttpClient,
 			  private rxStompService: RxStompService,
-			  private router:Router) {
+			  private router: Router, 
+			  private authService: AuthService) {
 
-    this.getFriendProfiles(this.userId);
+	this.authService.token$
+				.subscribe(user => {
+					if (user) this.userId = user.userId;
+					this.getFriendProfiles(this.userId);
+				}
+				);
+
 
 	//listen to the changes, identify by type to make changes to this.profiles
 	this.sub$ = this.rxStompService
@@ -92,6 +102,11 @@ export class ProfileService {
 	get profiles$() {
 		return this._profiles$.asObservable();
 	}
+
+	// get profile$() {
+	// 	return this._profile$.asObservable();
+	// }
+
 	get total$() {
 		return this._total$.asObservable();
 	}
@@ -144,7 +159,7 @@ export class ProfileService {
 	}
 
 	addProfile(id:number, payload: {email: string}) {
-        this.httpClient.post(`${this.URI}/profiles/${id}/addfriend`,payload).subscribe();
+        return this.httpClient.post(`${this.URI}/profiles/${id}/addfriend`,payload);
     }
 
     removeProfile(friendId: number) {
@@ -153,7 +168,7 @@ export class ProfileService {
     }
 
 	upDateNameById(id:number, payload:{name:string}){
-		this.httpClient.put(`${this.URI}/profiles/${id}`,payload).subscribe();
+		return this.httpClient.put(`${this.URI}/profiles/${id}`,payload);
 	}
 
 	onDeleteFriend(json:any){
@@ -189,6 +204,10 @@ export class ProfileService {
 			this.profiles.splice(idx, 1,json['profile']);
 		}
 		this.refreshProfiles();
+	}
+
+	getProfileById(userId:number){
+		return this.httpClient.get<{username:string,imageUrl:string}>(`${this.URI}/profiles/userprofile/${userId}`);
 	}
 
 	public refreshProfiles() {

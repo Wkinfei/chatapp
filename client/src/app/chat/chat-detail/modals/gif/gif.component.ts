@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GifDetails } from 'src/app/models/message';
 
 @Component({
@@ -12,7 +12,8 @@ export class GifComponent {
   @Input()
   gifs!:GifDetails[]
 
-  constructor( public modal: NgbActiveModal) {}
+  constructor( public modal: NgbActiveModal,
+              ) {}
 
   onClick(gif: GifDetails) {
     this.modal.close(gif);

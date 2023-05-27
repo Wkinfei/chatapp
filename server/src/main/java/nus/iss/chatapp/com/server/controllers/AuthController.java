@@ -33,8 +33,6 @@ public class AuthController {
                                         json.getString("username"), 
                                         json.getString("password"), 
                                         json.getString("email"));
-
-        
         profileService.addNewUser(detail);
 
         return ResponseEntity
@@ -44,12 +42,14 @@ public class AuthController {
 
     @PostMapping(path="/log-in")
     public String login(@RequestBody String payload) {
-        
+        // System.out.println("LOG IN"+ payload);
         JsonObject json = Utils.toJson(payload);
         LoginDetails login = new LoginDetails(json.getString("email"), 
                                                     json.getString("password"));
 
         String jwt = profileService.authenticateUser(login.getEmail(), login.getPassword());
+
+        // System.out.println(jwt);
 
         return Json.createObjectBuilder()
                     .add("token", jwt)

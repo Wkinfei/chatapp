@@ -60,6 +60,7 @@ public class ProfileService {
             // Set FROM profiles
                 Integer id = (userId == rs.getUserId1()) ?  rs.getUserId2(): rs.getUserId1();
                 // ProfileDetail profileDetail = profiles.find( x => x.id === id)
+            
                 ProfileDetail profileDetail = profiles.stream().filter(profile -> profile.getUserId() == id).findFirst().get();
                 friendProfile.setUsername(profileDetail.getUsername());
                 friendProfile.setImageUrl(profileDetail.getImageUrl());
@@ -115,6 +116,10 @@ public class ProfileService {
 
     public ProfileDetail getProfileDetail(String email){
         return profileRepo.getUserProfileByEmail(email);
+    }
+
+    public ProfileDetail getProfileDetailById(Integer id){
+        return profileRepo.getUserProfileByUserId(id);
     }
 
     public Integer addRelationship(Integer id1, String email){

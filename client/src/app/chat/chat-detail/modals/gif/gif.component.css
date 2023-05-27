@@ -1,0 +1,10 @@
+.gifs{
+    display: flex;
+    flex-wrap: wrap;
+    height: 300px;
+    width: auto;
+    overflow-y: scroll;
+    position: fixed;
+    bottom: 60px;
+}
+
