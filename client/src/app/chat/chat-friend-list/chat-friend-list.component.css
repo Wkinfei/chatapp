@@ -34,7 +34,7 @@
 .friend-list-container{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 
@@ -42,7 +42,6 @@
     border-bottom: 1px solid black;
     padding: 2px;
     display: grid;
-    /* grid-template-columns: 20% 25% 30% 10% ; */
     grid-template-columns: 100px 100px 100px 50px ;
     grid-template-rows: 1fr 1fr ;
     grid-template-areas: "img name time delete"
@@ -69,7 +68,7 @@
     border-radius: 100%;
     overflow: hidden;
     justify-content: center;
-    align-items: center;
+  
   
 }
 
@@ -103,8 +102,6 @@
     color: #575961;
     font-size: 0.9rem;
     font-weight: bold;
- 
-   
 }
 
 .friend--delete{

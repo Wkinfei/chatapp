@@ -48,6 +48,9 @@ export class SignUpComponent implements OnInit{
         this.router.navigate(["/log-in"]);
         this.toastService.showSuccess("Sign up successful! Thank you for joining us.");
         this.signUpForm.reset();
+      },
+      err=>{
+        this.toastService.showWarning(err.message)
       }
     );
 

@@ -45,8 +45,9 @@ export class AddFriendComponent implements OnInit{
         this.toastService.clear();
         this.toastService.showSuccess("Let's chat!!");
       })
-      .catch(() => {
-        this.toastService.showDanger("Oops.. an error as occured")
+      .catch((error) => {
+        console.log(error);
+        this.toastService.showDanger(error.message)
       })
   }
 

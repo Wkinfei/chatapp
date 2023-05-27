@@ -38,6 +38,9 @@ export class LogInComponent implements OnInit{
         // sessionStorage.setItem("userToken", x.token);
         this.toastService.showSuccess("Welcome !!!!");
         this.router.navigate(["/chat"]);
+      },
+      err=>{
+        this.toastService.showWarning(err.message)
       });
   }
 

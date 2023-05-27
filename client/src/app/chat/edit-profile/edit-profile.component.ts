@@ -46,8 +46,8 @@ export class EditProfileComponent implements OnInit{
         this.toastService.clear();
         this.toastService.showSuccess("You have successfully updated your username!!");
       })
-      .catch(() => {
-        this.toastService.showWarning("Update UserName Unsuccessful")
+      .catch(error => {
+        this.toastService.showWarning(error.message)
       }
     );
    

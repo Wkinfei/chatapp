@@ -43,7 +43,7 @@ export class ChatFriendListComponent {
       modalRef.result
         .then(id => { if(typeof(id) !== "string") {this.toastService.showPrimary("Friend removed!!!"); 
                                                     this.service.removeProfile(id)}})
-        .catch(err => console.log(err));
+        .catch(err => this.toastService.showWarning(err.message));
       // modalRef.result
       //     .then(resolve => console.log("resolve --> ", resolve))
       //     .catch(reject => console.log("reject --> " , reject));

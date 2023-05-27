@@ -86,6 +86,7 @@ public class SocketProfileService {
         if(optReceiverProfile.isEmpty()){
             // TODO: Throw error
             // Should never happen
+           
         }
 
         UpdateFriend updateReceiver = toUpdateFriend("message", optReceiverProfile.get());
@@ -96,6 +97,7 @@ public class SocketProfileService {
         if(optSenderProfile.isEmpty()){
             // TODO: Throw error
             // Should never happen
+           
         }
         UpdateFriend updateSender = toUpdateFriend("message", optSenderProfile.get());
         socketService.sendProfile(receiverId, updateSender);
@@ -116,6 +118,7 @@ public class SocketProfileService {
             Optional<FriendProfile> optSenderProfile = profileService.getFriendProfile(receiverId,userId);
             if(optSenderProfile.isEmpty()){
                 // TODO: Throw error
+              
             }
             UpdateFriend updateSender = toUpdateFriend("edit", optSenderProfile.get());
             socketService.sendProfile(receiverId, updateSender);
