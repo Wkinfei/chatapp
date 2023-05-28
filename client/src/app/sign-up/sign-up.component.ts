@@ -4,6 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../toast-container/toast.service';
 import { passwordMatchValidator } from './matchPassword';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,7 +18,8 @@ export class SignUpComponent implements OnInit{
   constructor( private fb : FormBuilder,
               private authSvc: AuthService,
               private router: Router,
-              private toastService: ToastService ){
+              private toastService: ToastService,
+              private profileSvc: ProfileService ){
 
   }
   
@@ -41,18 +43,19 @@ export class SignUpComponent implements OnInit{
 
 
   processForm(): void {
-    console.log(this.signUpForm.value);
+   
+    let exist = this.profileSvc.emailExists(this.signUpForm.value['email'])
 
-    this.authSvc.addNewUser(this.signUpForm.value).subscribe(
-      ()=>{
-        this.router.navigate(["/log-in"]);
-        this.toastService.showSuccess("Sign up successful! Thank you for joining us.");
-        this.signUpForm.reset();
-      },
-      err=>{
-        this.toastService.showWarning(err.message)
-      }
-    );
+    if(!exist){
+      this.authSvc.addNewUser(this.signUpForm.value).subscribe(
+        ()=>{
+          this.router.navigate(["/log-in"]);
+          this.toastService.showSuccess("Sign up successful! Thank you for joining us.");
+          this.signUpForm.reset();
+        }
+      );
+    }
+    this.toastService.showWarning("The email you entered already exist in our system. Please verify the email address and try again.")
 
     
     

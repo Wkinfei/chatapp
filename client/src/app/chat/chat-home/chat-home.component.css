@@ -1,67 +1,37 @@
+body { 
+  /* height: 100%; */
+  margin: 0px;
+}
+
 
 .grid-container{
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: 2fr 5fr ;
-    grid-template-areas: "friend body "   
-                          "friend body " ;                
+    grid-template-columns: 2.5fr 4.5fr ;
+    grid-template-areas: "friend body ";                
     margin: 0px;
-    height:691.2px;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
+
+
 
 .friend-list {
     grid-area: friend;
-    width: 100%;
+    min-width: 400px;
     background-color: #f0dbab;
     border: 2px solid burlywood;
-    /* overflow-y: scroll; */
-    overflow-x: hidden;
-    padding: 1rem 0rem;
+    /* overflow-y: scroll;
+    overflow-x: hidden; */
    
-    
 }
+
 
 .message-body {
     grid-area: body;
-    background-color: rgb(240, 234, 225);
-    border-top: 2px solid burlywood;
-    border-bottom: 2px solid burlywood;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding: 1rem ;
-    padding-bottom: 2rem;;
+    overflow: hidden;
+     background-color: #f5eddb;
 }
 
-.message-space1{
-    grid-area: space1;
-    background-color: rgb(240, 234, 225);
-    border-top: 2px solid burlywood;
-    border-bottom: 2px solid burlywood;
-}
 
-.message-space2{
-    grid-area: space2;
-    background-color: rgb(240, 234, 225);
-    border-top: 2px solid burlywood;
-    border-bottom: 2px solid burlywood;
-}
-
-/* width */
-::-webkit-scrollbar {
-    width: 12px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    display:none;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: rgb(241, 212, 173)
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #f5b466;
-  }

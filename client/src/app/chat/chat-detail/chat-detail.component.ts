@@ -72,7 +72,17 @@ export class ChatDetailComponent implements OnInit{
             .pipe(
               map((data) => JSON.parse(data.body) as MessageDetail),
               filter(data => data.chatId == this.chatId),
-              tap(data => this.messages.push(data))
+              tap(data => {
+
+                // TODO: RX stomp sends incorrect time, purely display issue
+                // Manually offset by +8 hours on client fix display issue
+                // Need root cause analysis
+                let dataTime = new Date(data.msgTime).getTime();
+                let newTime = dataTime + 8*60*60*1000;
+                data.msgTime = new Date(newTime);
+
+                this.messages.push(data);
+              })
               )
             .subscribe();
       })
@@ -149,7 +159,7 @@ export class ChatDetailComponent implements OnInit{
   searchGif(){
     this.myProperty$.asObservable()
     .pipe(
-      debounceTime(1000),
+      debounceTime(800),
       distinctUntilChanged(),
       filter((message) => message.length > 5),
       filter((message) => message.substring(0, 5).toLocaleLowerCase() === "@gif "),

@@ -11,15 +11,15 @@ import lombok.ToString;
 @Getter @Setter @NoArgsConstructor @ToString
 public class EmailDetails {
 
-    @NotBlank(message="name cannot be blank or null")
+
     private String name;
 
-    @Email(message = "Email should be valid")
+
     private String email;
 
-    @NotBlank(message="Please fill up this field.")
+
     private String content;
 
-    @NotBlank(message="Please fill up this field.")
+
     private String subject;
 }

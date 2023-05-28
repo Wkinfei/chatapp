@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException.NotFound;
 
-import nus.iss.chatapp.com.server.exceptions.AddFriendException;
+
 import nus.iss.chatapp.com.server.exceptions.DeleteUserDataException;
 import nus.iss.chatapp.com.server.models.FriendProfile;
 import nus.iss.chatapp.com.server.models.MessageDetail;
@@ -124,17 +124,23 @@ public class ProfileService {
         return profileRepo.getUserProfileByUserId(id);
     }
 
-    public void addRelationship(Integer id1, String email){
+    public Integer addRelationship(Integer id1, String email){
         ProfileDetail user = profileRepo.getUserProfileByEmail(email);
         Integer userId1 = Math.min(id1,user.getUserId());
         Integer userId2 = Math.max(id1,user.getUserId());
 
-        //if validate = 1 {insert sql}
-        if(profileRepo.checkRelationshipExist(userId1, userId2) == false){
-             profileRepo.addRelationship(userId1, userId2);
-        }else{
-            throw new AddFriendException("The email you entered does not exist in our system. Please verify the email address and try again.");
+        if (profileRepo.checkUserProfileExistsByEmail(email) == false) {
+            //The email you entered is not valid. Please try again.
+            return 0;
         }
+      
+        if(profileRepo.checkRelationshipExist(userId1, userId2) == true){
+        // User already exist in your friend list.
+            return 0;
+        }
+           
+        return profileRepo.addRelationship(userId1, userId2);
+        
     }
 
     public Optional<FriendProfile> getFriendProfile(Integer userId, Integer friendId){
@@ -157,6 +163,7 @@ public class ProfileService {
             return profileRepo.insertNewUserProfile(detail);
 
         } else {
+
             return 0;
         }
     }
@@ -170,12 +177,17 @@ public class ProfileService {
         
         if(!authentication.isAuthenticated()) {
         // TODO: THROW ERROR
-            // not authenticated    
+            // not authenticated
+           
         } 
 
         ProfileDetail profileDetail = profileRepo.getUserProfileByEmail(email);
         
         return Utils.generateJwtToken(authentication, profileDetail, jwtEncoder);
         
+    }
+
+    public boolean checkUserProfileExistsByEmail(String email){
+        return profileRepo.checkUserProfileExistsByEmail(email);
     }
 }

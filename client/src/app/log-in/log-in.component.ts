@@ -40,7 +40,7 @@ export class LogInComponent implements OnInit{
         this.router.navigate(["/chat"]);
       },
       err=>{
-        this.toastService.showWarning(err.message)
+        this.toastService.showWarning("The email and/or password you entered is invalid. Please check your credentials and try again.")
       });
   }
 

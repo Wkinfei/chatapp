@@ -47,7 +47,7 @@ export class AddFriendComponent implements OnInit{
       })
       .catch((error) => {
         console.log(error);
-        this.toastService.showDanger(error.message)
+        this.toastService.showDanger("The email you entered is not valid or User already exist in your friend list. Please try again.")
       })
   }
 

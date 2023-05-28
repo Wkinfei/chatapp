@@ -1,12 +1,14 @@
-<div class="parent">
-
+<div class="chat--container ">
     <!-- {{ friendProfile | async | json }} -->
-    <div class="friend-profile">
-        <img style=" width:75px; height: 75px;" [src]="friendProfile.imageUrl"/>
-        <p>{{friendProfile.username}}</p>
+
+    <div class="friend-details">
+        <div class="image--detail">
+            <img [src]="friendProfile?.imageUrl"/>
+        </div>
+        <p>{{friendProfile?.username}}</p>
     </div>
 
-    <div class="messages">
+    <div class="messages scroller">
         <div *ngFor="let message of messages" class="message" 
         [ngClass]="message.senderId == userId ? 'user-me' : 'user-other'">
             <div *ngIf="message?.msgType === 'image'" >
@@ -17,13 +19,14 @@
             <div *ngIf="message?.msgType === 'text'">
            <p> {{message.text}}
             <br>
-            {{message.msgTime | date: 'EEE h:mm a'}}
+            <!-- EEE h:mm a -->
+            {{message.msgTime | date: 'full'}}
             </p>
             </div>
         </div>
         <div class="anchor"></div>
     </div>
-    
+
     <div class="keyboard">
         <form (ngSubmit)="onSendMessage()">
             <input class="keyboard-input" type="text" 

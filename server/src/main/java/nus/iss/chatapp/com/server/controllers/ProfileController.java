@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -82,14 +84,14 @@ public class ProfileController {
         String userName = j.getString("username");
         Integer counts = profileService.updateUserNameByID(userName, id);
         // System.out.println("update>>>"+ counts);
-        if(counts == 0){
-          return ResponseEntity
-                  .status(HttpStatus.BAD_REQUEST)
-                  .contentType(MediaType.APPLICATION_JSON)
-                    .body(Json.createObjectBuilder()
-                             .add("message"," ")
-                             .build().toString());
-        }
+        // if(counts == 0){
+        //   return ResponseEntity
+        //           .status(HttpStatus.BAD_REQUEST)
+        //           .contentType(MediaType.APPLICATION_JSON)
+        //             .body(Json.createObjectBuilder()
+        //                      .add("message"," ")
+        //                      .build().toString());
+        // }
          //socket
          socketProfileService.updateUserName(id);
          return ResponseEntity

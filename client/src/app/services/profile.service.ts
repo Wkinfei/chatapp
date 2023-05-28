@@ -210,6 +210,11 @@ export class ProfileService {
 		return this.httpClient.get<{username:string,imageUrl:string}>(`${this.URI}/profiles/userprofile/${userId}`);
 	}
 
+	emailExists(email: string) : Observable<boolean> {
+		let params = new HttpParams().append("email", email);
+		return this.httpClient.get<boolean>("/api/auth", {params});
+	  }
+
 	public refreshProfiles() {
 		this._search$.next();
 	}

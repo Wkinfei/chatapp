@@ -18,6 +18,7 @@ export class ChatFriendListComponent {
   profiles$: Observable<FriendProfiles[]>;
   total$: Observable<number>;
 
+  selectedId: number = -1;
   
   constructor(
     private router: Router,
@@ -34,6 +35,7 @@ export class ChatFriendListComponent {
 
     onSelectFriend(id:number): void {
       this.router.navigate(["/chat", id]);
+      this.selectedId = id;
     }
 
     openDelete(profile: FriendProfiles) {

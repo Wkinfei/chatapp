@@ -1,12 +1,25 @@
-.top--buttons{
-    background-color: #f0dbab;
-    padding: 2px;
+.friendlist-container{
     display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.top--container{
+    display: flex;
+    flex-direction: column;
+    background-color: #f1d592;
+    border-bottom: 2px solid;
+    border:burlywood;
+}
+
+.top--buttons{
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
 }
 
 .add,.edit{
-    background-color: #f0dbab;
+    background-color: #f1d592;
     border-radius: 15%;
     border:0px;
     
@@ -31,70 +44,91 @@
     font-family:'Times New Roman', Times, serif;
 }
 /* ------------------------------------------------------------------------------- */
-.friend-list-container{
+
+.friend-profiles{
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
-
-.friend {
-    border-bottom: 1px solid black;
-    padding: 2px;
+.friend-profile {
     display: grid;
-    grid-template-columns: 100px 100px 100px 50px ;
-    grid-template-rows: 1fr 1fr ;
-    grid-template-areas: "img name time delete"
-                        "img msg msg msg";
-                  
-    column-gap: 13px;
-    row-gap: 4px;                     
+    grid-template-rows: 40px 40px;
+    grid-template-columns: 65px auto 80px 30px;
+    grid-template-areas: "img username time btn"
+                         "img msg msg msg";
+    align-items: center;
+    border-bottom: 1px solid #f1f1f1;
+
+    padding: 10px 10px;
+
+    /* border: 2px solid black; */
+
 }
 
-.friend:hover{
-    background-color:#f5b848;
-    cursor: pointer;
+.friend-profile:hover {
+    background-color: #f5b848;
 }
 
+.friend-profile.selected {
+    background-color: #ee9c04;
+}
 
-.friend--image{
+.friend-profile.activated{
+    background-color: #3d7deb;
+}
+
+.profile__img {
     grid-area: img;
+    justify-self: center;
+    align-self: center;
+    /* background-color: blueviolet; */
+}
+
+.profile__img .profile__img--container {
     display:flex;
+    justify-content: center;
+    align-items: center;
     width: 80px;
     height: 80px;
-    background-color:#f0e7d0;
-    align-self: center;
-    border: 1px solid rgba(30, 127, 192, 0.5);
+    overflow: hidden;
+    background-color: whitesmoke;
     border-radius: 100%;
-    overflow: hidden;
-    justify-content: center;
-  
-  
 }
 
-.friend--name{
-    grid-area: name;
+.profile__img .profile__img--container > img {
+    width: 80px;
+    height: 80px;
+}
+
+
+.profile__username{
+    grid-area: username;
+    /* background-color: aquamarine; */
+    padding: 0px 16px;
     color: #232f81;
-    padding: auto;
     font-size:1.1rem;
-    font-weight: 700;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.friend--time{
-    grid-area: time;
-    color: #575961;
-    font-size: 0.8rem;
-    align-self: center;
     font-family:monospace;
     overflow: hidden;
     text-overflow: ellipsis;
+    
 }
-.friend--lastmsg{
-    grid-area:msg;
-    padding: auto;
+
+.profile__time{
+    grid-area: time;
+    /* background-color: #ffffff; */
+    justify-self: start;
+    color: #575961;
+    font-size: 0.8rem;
+    font-family:monospace;
+}
+
+.profile__btn{
+    grid-area: btn;
+    /* background-color: #3ad; */
+    justify-self: center;
+    align-self: center;
     font-family:monospace;
     white-space: nowrap;
     overflow: hidden;
@@ -104,12 +138,33 @@
     font-weight: bold;
 }
 
-.friend--delete{
-    display: flex;
-    grid-area: delete;
-    justify-self:flex-end;
-    align-items: end;
+.profile__msg{
+    grid-area: msg;
+    padding: 0px 16px;
+    color: #575961;
+    font-size: 0.9rem;
+    font-family:monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-
-
+/* * width */ 
+::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    display:none;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(241, 212, 173)
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f5b466;
+  }

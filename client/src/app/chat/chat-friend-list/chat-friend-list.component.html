@@ -1,90 +1,99 @@
+<div class="friendlist-container">
 
-<div class="top--buttons">
-<div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-	<button
-		type="button"
-		class="edit"
-		id="dropdownManual"
-		ngbDropdownAnchor
-		(focus)="myDrop.open()"
-	>
-	<img  width="45" height="30" src="/assets/edit.svg">
-	</button>
-	<div ngbDropdownMenu aria-labelledby="dropdownManual">
-		<button class="edit--profile" ngbDropdownItem type="button" (click)="onEditProfile()">
-			<img  width="35" height="25" src="/assets/edit-profile.svg">Edit Profile</button>
-		<button class="log--out" ngbDropdownItem type="button" (click)="onLogOut()">
-			<img  width="35" height="22" src="/assets/log-out.svg">Log Out</button>
-	</div>
-</div>
-<button class="add" type="button" (click)="onAddFriend()">
-	<img  width="45" height="30" src="/assets/add-friend.svg">
-</button>
-</div>
-
-
-<div class="friend-list-container">
-<form>
-	<!-- search bar -->
-	<div class="mb-3 row">
-		<!-- <label for="profile-search" class="col-xs-3 col-sm-auto col-form-label">
-			Search:
-		</label> -->
-		<label class="search--name">
-			<div class="col-xs-3 col-sm-auto">
-				<input
-					id="profile-search"
-					type="text"
-					class="form-control search__input"
-					name="searchTerm"
-					[(ngModel)]="service.searchTerm"
-					placeholder="Search Friend"
-				/>
+	<div class="top--container">
+		<div class="top--buttons">
+			<div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+				<button
+					type="button"
+					class="edit"
+					id="dropdownManual"
+					ngbDropdownAnchor
+					(focus)="myDrop.open()"
+				>
+				<img  width="45" height="30" src="/assets/edit.svg">
+				</button>
+				<div ngbDropdownMenu aria-labelledby="dropdownManual">
+					<button class="edit--profile" ngbDropdownItem type="button" (click)="onEditProfile()">
+						<img  width="35" height="25" src="/assets/edit-profile.svg">Edit Profile</button>
+					<button class="log--out" ngbDropdownItem type="button" (click)="onLogOut()">
+						<img  width="35" height="22" src="/assets/log-out.svg">Log Out</button>
+				</div>
 			</div>
-		</label>
+			<button class="add" type="button" (click)="onAddFriend()">
+				<img  width="45" height="30" src="/assets/add-friend.svg">
+			</button>
+		</div>
 		
-		<span class="col col-form-label" *ngIf="service.loading$ | async">Loading...</span>
+		<form>
+			<!-- search bar -->
+			<div class="mb-3 row">
+				<!-- <label for="profile-search" class="col-xs-3 col-sm-auto col-form-label">
+					Search:
+				</label> -->
+				<label>
+					<div class="col-xs-3 col-sm-auto">
+						<input
+							id="profile-search"
+							type="text"
+							class="form-control search__input"
+							name="searchTerm"
+							[(ngModel)]="service.searchTerm"
+							placeholder="Search Friend"
+						/>
+					</div>
+				</label>
+				
+				<span class="col col-form-label" *ngIf="service.loading$ | async">Loading...</span>
+			</div>
+		</form>
 	</div>
 
-	<!-- table data -->
-	<table class="table table-striped">
-		<tbody>
-			<tr *ngFor="let profile of profiles$ | async " (click)="onSelectFriend(profile.userId)">
-				<td class="friend" [ngClass]="{'selected': profile.userId}">
-					<div class="friend--image">
-						<img style="border-color: black; width:75px; height: 75px;" [src]="profile.imageUrl"/>
-					</div>
-					<!-- <th scope="row">{{ profile.imageUrl }}</th> -->
-					<div class="friend--name">
-						<ngb-highlight [result]="profile.username" [term]="service.searchTerm"></ngb-highlight>
-					</div>
-					<div class="friend--lastmsg">
-						<!-- ngIf statement for text / image -->
-						<div *ngIf="profile?.msgType == 'image'">
-							<img style="width:auto; height: 20px;" src="/assets/gif.svg">
-							{{'GIF'}}
-						</div>
-						<div *ngIf="profile?.msgType != 'image'">
-							{{profile.text}}
-						</div>
-					</div>
-					<div class="friend--time">
-						{{ profile.msgTime | date: 'EEE h:mm a'}}
-					</div>
-					<div class="friend--delete">
-						<button type="button"
-						class="btn btn-outline-secondary"
-						ngbPopover="Click to remove friend"
-						triggers="mouseenter:mouseleave"
-						popoverTitle="Remove friend"
-						style="border:0px"
-						(click)="openDelete(profile)">
-						<img  width="25" height="25" src="/assets/remove.svg">
-					</button>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</form>
+
+	<div class="friend-profiles">
+
+		<table class="table table-striped">
+			<tbody>
+				<!-- <div style="display: flex; flex-direction: column; width: 100%;"> -->
+					<tr *ngFor="let profile of profiles$ | async " (click)="onSelectFriend(profile.userId)">
+						<td class="friend-profile" [ngClass]="{'selected': profile.userId === selectedId}">
+							<div class="profile__img">
+								<div class="profile__img--container">
+									<img style="width:75px; height: 75px;" [src]="profile.imageUrl"/>
+								</div>
+							</div>
+							<!-- <th scope="row">{{ profile.imageUrl }}</th> -->
+							<div class="profile__username">
+								<ngb-highlight [result]="profile.username" [term]="service.searchTerm"></ngb-highlight>
+							</div>
+							<div class="profile__msg">
+								<!-- ngIf statement for text / image -->
+								<div *ngIf="profile?.msgType == 'image'">
+									<img style="width:auto; height: 20px;" src="/assets/gif.svg">
+									{{'GIF'}}
+								</div>
+								<div *ngIf="profile?.msgType != 'image'">
+									{{profile.text}}
+								</div>
+							</div>
+							<div class="profile__time">
+								{{ profile.msgTime | date: 'EEE h:mm a'}}
+							</div>
+							<div class="profile__btn">
+								<button type="button"
+								class="btn btn-outline-secondary"
+								ngbPopover="Click to remove friend"
+								triggers="mouseenter:mouseleave"
+								popoverTitle="Remove friend"
+								style="border:0px"
+								(click)="openDelete(profile)">
+								<img  width="25" height="25" src="/assets/remove.svg">
+							</button>
+							</div>
+						</td>
+					</tr>
+				<!-- </div> -->
+			</tbody>
+		</table>
+	</div>
+
 </div>

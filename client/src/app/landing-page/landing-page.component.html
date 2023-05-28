@@ -1,5 +1,5 @@
 
-  <div class="container">
+  <div id="home" class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
       <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
         <img class="bi me-2" width="60" height="48" aria-label="Logo" src="/assets/chatlogo.svg"/> WhatsChat
@@ -7,10 +7,9 @@
       </a>
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-        <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>
-        <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>
-        <li><a href="#" class="nav-link px-2 link-dark">About</a></li>
+        <li><a href="#" class="nav-link px-2 link-secondary" (click)="onClickScroll('home')">Home</a></li>
+        <li><a href="#" class="nav-link px-2 link-dark" (click)="onClickScroll('email')">Contact</a></li>
+     
       </ul>
 
       <div class="col-md-3 text-end">
@@ -22,8 +21,10 @@
 <!-- #c2d9e2 -->
   <div class="me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-dark overflow-hidden" style="background-color: #f0dbab;">
     <div class="my-3 py-3">
-      <h2 class="display-5">Another headline</h2>
-      <p class="display-7">And an even wittier subheading.</p>
+      <h2 class="display-5">Instant Chatting </h2>
+      <p class="display-7">Connect instantly with friends and colleagues. 
+        Real-time messaging with a simple and intuitive interface. 
+        Seamless communication without downloads or installations.</p>
     </div>
     <div class="bg-light shadow-sm mx-auto" style="width: 70%; height: 350px; border-radius: 21px 21px 0 0;">
         <div>
@@ -36,4 +37,4 @@
     </div>
   </div>
 
-  <app-email></app-email>
+  <app-email id="email"></app-email>
