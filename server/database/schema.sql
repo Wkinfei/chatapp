@@ -23,11 +23,3 @@ create table user_relationship(
     constraint pk_id primary key (chat_id)
 );
 
-
-INSERT INTO user_relationship (user_id1,user_id2) VALUES(1,2);
-INSERT INTO user_relationship (user_id1,user_id2) VALUES(1,3);
-INSERT INTO user_relationship (user_id1,user_id2) VALUES(1,4);
-INSERT INTO user_relationship (user_id1,user_id2) VALUES(1,5);
-INSERT INTO user_relationship (user_id1,user_id2) VALUES(2,3);
-INSERT INTO user_relationship (user_id1,user_id2) VALUES(2,5);
-INSERT INTO user_relationship (user_id1,user_id2) VALUES(3,4);
