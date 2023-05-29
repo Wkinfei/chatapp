@@ -1,8 +1,11 @@
 import { RxStompConfig } from '@stomp/rx-stomp';
 
+let server = window.location.host;
+
 export const myRxStompConfig: RxStompConfig = {
   // Which server?
-  brokerURL: 'ws://localhost:4200/ws/chat',
+  // brokerURL: `ws://localhost:4200/ws/chat`,
+  brokerURL: `wss://${server}/chat`,
 
   // Headers
   // Typical keys: login, passcode, host

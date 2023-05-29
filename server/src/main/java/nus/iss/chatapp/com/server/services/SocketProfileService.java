@@ -1,6 +1,6 @@
 package nus.iss.chatapp.com.server.services;
 
-import java.time.LocalDateTime;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -84,8 +84,7 @@ public class SocketProfileService {
 
         Optional<FriendProfile> optReceiverProfile = profileService.getFriendProfile(msg.getSenderId(), receiverId);
         if(optReceiverProfile.isEmpty()){
-            // TODO: Throw error
-            // user doesn't exist
+            
            
         }
 
@@ -95,8 +94,7 @@ public class SocketProfileService {
         
         Optional<FriendProfile> optSenderProfile = profileService.getFriendProfile(receiverId, msg.getSenderId());
         if(optSenderProfile.isEmpty()){
-            // TODO: Throw error
-            // user doesn't exist
+          
            
         }
         UpdateFriend updateSender = toUpdateFriend("message", optSenderProfile.get());
@@ -117,8 +115,7 @@ public class SocketProfileService {
         for(Integer receiverId : receiverIds){
             Optional<FriendProfile> optSenderProfile = profileService.getFriendProfile(receiverId,userId);
             if(optSenderProfile.isEmpty()){
-                // TODO: Throw error
-                // user doesn't exist
+               
               
             }
             UpdateFriend updateSender = toUpdateFriend("edit", optSenderProfile.get());

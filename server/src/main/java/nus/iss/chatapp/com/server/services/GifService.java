@@ -2,6 +2,7 @@ package nus.iss.chatapp.com.server.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,10 @@ import nus.iss.chatapp.com.server.utils.Utils;
 
 @Service
 public class GifService {
-    private String API_PUB_KEY ="AIzaSyDjA9VxbkePxQTeG8_elKzYP3uEYQNNohE";
+
+    @Value("${api.key.tenor}")
+    private String API_PUB_KEY;
+
     private final String URL = "https://tenor.googleapis.com/v2/search";
 
     public List<TenorGif> getGif(String search,Integer limit){
@@ -25,9 +29,9 @@ public class GifService {
         .fromUriString(URL)
         .queryParam("q",search)
         .queryParam("key",API_PUB_KEY)
-        // .queryParam("media_filter",giftype)
+
         .queryParam("limit",limit)
-        // .queryParam("anon_id", anon_id)
+ 
         .build()
         .toUriString();
 

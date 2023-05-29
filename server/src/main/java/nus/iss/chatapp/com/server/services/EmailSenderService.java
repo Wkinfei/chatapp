@@ -26,14 +26,11 @@ public class EmailSenderService {
 
         String mailContent = 
         """
-            <p style=\"color: blue\"><b>Sender Email:<b> %s</p>
+            <p><b>Sender Email:<b> %s</p>
             <p><b>Name:<b> %s</p>
             <p><b>Content:<b> %s</p>
         """.formatted(email, name, content);
-        
-        // String mailContent = "<p style=\"color: blue\"><b>Sender Email:<b> "+ email + "</p>";
-        // mailContent += "<p><b>Name:<b> "+ name + "</p>";
-        // mailContent += "<p><b>Content:<b> "+ content + "</p>";
+
 
         helper.setFrom(toEmail,"WhatsChat FAQ");
         helper.setTo(toEmail);

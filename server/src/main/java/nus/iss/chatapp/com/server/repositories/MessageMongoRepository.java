@@ -81,7 +81,7 @@ public class MessageMongoRepository {
          AggregationOperation projectMessage = new GenericAggregationOperation(MONGO_PROJECT_MESSAGE);  
          AggregationOperation projectResult = new GenericAggregationOperation(MONGO_PROJECT_RESULT);    
          Aggregation pipeline = Aggregation.newAggregation(sortMsgTime,groupChatId,projectMessage,projectResult);
-        //  System.out.println("pipeline>>>>"+pipeline);
+   
 
         AggregationResults<Document> res = mongoTemplate.aggregate(pipeline, "messages", Document.class);
       
@@ -132,7 +132,7 @@ public class MessageMongoRepository {
             Criteria.where("chatId").is(chatId));
         mongoTemplate.remove(query,"messages");
 
-        // System.out.println("deleteMessage>>>"+ result.toString());
+        
     }
 
     public MessageDetail getLatestMessageDetailByChatId(Integer chatId){

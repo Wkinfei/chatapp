@@ -11,7 +11,7 @@ create table user_profiles(
     email varchar(50),
     image_url varchar(4000),
     role varchar(64) NOT NULL,
-	enabled boolean DEFAULT NULL,
+	enabled tinyint DEFAULT NULL,
     constraint pk_id primary key (user_id)
 );
 

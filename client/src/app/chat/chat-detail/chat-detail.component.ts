@@ -34,8 +34,6 @@ export class ChatDetailComponent implements OnInit{
   friendProfile!: any;
 
 
-  //Get friend profile imageUrl & displayName
-
   constructor(private rxStompService: RxStompService, 
     private chatSvc: ChatService,
     private activatedRoute: ActivatedRoute,
@@ -74,9 +72,6 @@ export class ChatDetailComponent implements OnInit{
               filter(data => data.chatId == this.chatId),
               tap(data => {
 
-                // TODO: RX stomp sends incorrect time, purely display issue
-                // Manually offset by +8 hours on client fix display issue
-                // Need root cause analysis
                 let dataTime = new Date(data.msgTime).getTime();
                 let newTime = dataTime + 8*60*60*1000;
                 data.msgTime = new Date(newTime);
@@ -140,7 +135,7 @@ export class ChatDetailComponent implements OnInit{
 
   async setRelationship(): Promise<Relationship[]> {
     return firstValueFrom(this.profileSvc.getRelationship())
-    // this.profileSvc.getRelationship().subscribe(x => {this.relationships = x})
+   
   }
 
   async getMsg(chatId:number) : Promise<MessageDetail[]>{

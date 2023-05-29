@@ -15,8 +15,8 @@ import { ToastService } from 'src/app/toast-container/toast.service';
 })
 export class ChatFriendListComponent {
 
-  profiles$: Observable<FriendProfiles[]>;
-  total$: Observable<number>;
+  profiles$!: Observable<FriendProfiles[]>;
+  total$!: Observable<number>;
 
   selectedId: number = -1;
   
@@ -31,7 +31,11 @@ export class ChatFriendListComponent {
       this.total$ = service.total$;
     }
 
-    //Oninit to listen to the delta
+    ngOnInit(): void {
+      this.profiles$ = this.service.profiles$;
+      this.total$ = this.service.total$;
+    }
+
 
     onSelectFriend(id:number): void {
       this.router.navigate(["/chat", id]);

@@ -1,0 +1,42 @@
+# server.port=8085
+
+# spring.data.mongodb.url=mongodb://localhost:27017
+# spring.data.mongodb.database=chat_messager_app
+
+# # SQL Local settings
+# # spring.datasource.url=jdbc:mysql://localhost:3306/chat_messager_app
+# # spring.datasource.username=newuser
+# # spring.datasource.password=
+# # spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+
+# spring.datasource.url=jdbc:mysql://db-mysql-sgp1-83041-do-user-13841570-0.b.db.ondigitalocean.com:25060/chat_app
+# spring.datasource.username=doadmin
+# spring.datasource.password=AVNS_DHGBRXIllHK2TZYLB1Y
+# spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+
+# #Send Mail
+# spring.mail.host=smtp.gmail.com
+# spring.mail.port=587
+# spring.mail.username=WhatsChat2023@gmail.com
+# spring.mail.password=vpoyrzpbzlchtara
+# spring.mail.properties.mail.smtp.auth=true
+# spring.mail.properties.mail.smtp.starttls.enable=true
+
+# api.key.tenor=AIzaSyDjA9VxbkePxQTeG8_elKzYP3uEYQNNohE
+
+# logging.level.org.springframework.security=DEBUG
+
+# -----------------
+
+SET SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql-sgp1-83041-do-user-13841570-0.b.db.ondigitalocean.com:25060/chat_app
+SET SPRING_DATASOURCE_USERNAME=doadmin
+SET SPRING_DATASOURCE_PASSWORD=AVNS_DHGBRXIllHK2TZYLB1Y
+
+SET SPRING_MAIL_HOST=smtp.gmail.com
+SET SPRING_MAIL_PORT=587
+SET SPRING_MAIL_USERNAME=WhatsChat2023@gmail.com
+SET SPRING_MAIL_PASSWORD=vpoyrzpbzlchtara
+SET SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+SET SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+
+SET API_KEY_TENOR=AIzaSyDjA9VxbkePxQTeG8_elKzYP3uEYQNNohE

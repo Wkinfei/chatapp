@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserToken } from '../models/profiles';
@@ -80,6 +80,12 @@ export class AuthService {
  private clearLogoutTimer() {
     this.autoLogoutTimer = null;
   }
+
+  emailExists(email: string) : Observable<boolean> {
+		let params = new HttpParams().append("email", email);
+		return this.httpClient.get<boolean>("/api/auth", {params});
+	  }
+
 }
 
 

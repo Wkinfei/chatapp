@@ -15,7 +15,8 @@ import { AuthService } from "./auth.service";
 
 
       
-        if(req.url.match(".*/log-in") || req.url.match("./sign-up")) {
+        if(req.url.match(".*/log-in") || req.url.match(".*/sign-up") 
+        || req.url.match(".*/api/auth")|| req.url.match(".*/api/email")) {
             return next.handle(req);
         }
         return this.authService.token$.pipe(

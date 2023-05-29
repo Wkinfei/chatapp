@@ -1,10 +1,10 @@
 package nus.iss.chatapp.com.server.services;
 
 import java.util.List;
-import java.util.function.Predicate;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+
 import org.springframework.stereotype.Service;
 
 import nus.iss.chatapp.com.server.models.MessageDetail;
@@ -22,8 +22,7 @@ public class SocketMessageService {
     ProfileRepository profileRepository;
 
     public void sendMessage(MessageDetail msg) {
-        // System.out.println(">>" + msg);
-        //use chatId and senderId to retrieve recieverId
+      
         List<Relationship> relationships = profileRepository.getRelationships(msg.getSenderId());
     
         Relationship rs = relationships.stream().filter(
@@ -33,7 +32,7 @@ public class SocketMessageService {
         Integer receiverId = (msg.getSenderId() == rs.getUserId1()) ? 
                                 rs.getUserId2() : rs.getUserId1();
         
-    //    System.out.println("Message Socket>>>>"+ receiverId);
+
         socketService.sendMessage(msg.getSenderId(), msg);
         socketService.sendMessage(receiverId, msg);
         return;

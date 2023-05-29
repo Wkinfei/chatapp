@@ -176,9 +176,7 @@ public class ProfileService {
         Authentication authentication = authenticationManager.authenticate(authRequest);
         
         if(!authentication.isAuthenticated()) {
-        // TODO: THROW ERROR
-            // not authenticated
-           
+      
         } 
 
         ProfileDetail profileDetail = profileRepo.getUserProfileByEmail(email);
